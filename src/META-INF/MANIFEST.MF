@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.1
+Created-By: 19.1-b02-334 (Apple Inc.)
+Implementation-Title: Ext GWT
+Implementation-Version: 2.2.4
+Implementation-Vendor: Sencha Inc.
+
