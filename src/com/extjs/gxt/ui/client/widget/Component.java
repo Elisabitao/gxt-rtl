@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -35,6 +35,8 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.tips.ToolTip;
 import com.extjs.gxt.ui.client.widget.tips.ToolTipConfig;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -1700,20 +1702,27 @@ public abstract class Component extends Widget implements Observable {
       disableTextSelection(disableTextSelection == 1);
     }
 
-    if (monitorWindowResize) {
-      if (windowResizeTask == null) {
-        windowResizeTask = new DelayedTask(new Listener<BaseEvent>() {
-          public void handleEvent(BaseEvent be) {
-            onWindowResize(Window.getClientWidth(), Window.getClientHeight());
-          }
-        });
-      }
-      resizeHandler = Window.addResizeHandler(new ResizeHandler() {
-        public void onResize(ResizeEvent event) {
-          windowResizeTask.delay(windowResizeDelay);
-        }
-      });
-    }
+    Scheduler.get().scheduleDeferred(new ScheduledCommand()
+	{
+		@Override
+		public void execute()
+		{
+			if (monitorWindowResize && isAttached()) {
+				if (windowResizeTask == null) {
+					windowResizeTask = new DelayedTask(new Listener<BaseEvent>() {
+						public void handleEvent(BaseEvent be) {
+							onWindowResize(Window.getClientWidth(), Window.getClientHeight());
+						}
+					});
+				}
+				resizeHandler = Window.addResizeHandler(new ResizeHandler() {
+					public void onResize(ResizeEvent event) {
+						windowResizeTask.delay(windowResizeDelay);
+					}
+				});
+			}
+		}
+	});
     fireEvent(Events.Attach);
     ComponentManager.get().register(this);
   }

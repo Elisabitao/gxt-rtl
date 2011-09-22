@@ -6,9 +6,6 @@
   <inherits name='com.extjs.gxt.desktop.WebDesktop' />
   <entry-point class='com.extjs.gxt.samples.desktop.client.DesktopApp' />
   
-  <!-- English language, independent of country -->
-	<extend-property name="locale" values="en" />
-
 	<!-- Persian -->
 	<extend-property name="locale" values="fa_IR" />
 </module>

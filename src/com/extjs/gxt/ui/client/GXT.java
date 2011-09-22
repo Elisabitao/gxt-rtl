@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -34,74 +34,30 @@ import com.google.gwt.user.client.ui.Accessibility;
 public class GXT {
 
   /**
+   * URL to a 1x1 transparent gif image used by GXT to create inline icons with
+   * CSS background images. Default value is '/images/default/shared/clear.gif';
+   */
+  public static String BLANK_IMAGE_URL;
+
+  /**
    * GXT images.
    */
   public static XImages IMAGES = (XImages) GWT.create(XImages.class);
 
   /**
-   * GXT messages.
+   * <code>true</code> if is air.
    */
-  public static XMessages MESSAGES = (XMessages) GWT.create(XMessages.class);
+  public static boolean isAir;
 
   /**
-   * <code>true</code> if the browser uses the webkit engine.
+   * <code>true</code> if is borderbox.
    */
-  public static boolean isWebKit;
-
-  /**
-   * <code>true</code> if the browser is safari.
-   */
-  public static boolean isSafari;
-
-  /**
-   * <code>true</code> if the browser is safari2.
-   */
-  public static boolean isSafari2;
-
-  /**
-   * <code>true</code> if the browser is safari3.
-   */
-  public static boolean isSafari3;
-
-  /**
-   * <code>true</code> if the browser is safari4.
-   */
-  public static boolean isSafari4;
+  public static boolean isBorderBox;
 
   /**
    * <code>true</code> if the browser is chrome.
    */
   public static boolean isChrome;
-
-  /**
-   * <code>true</code> if the browser is opera.
-   */
-  public static boolean isOpera;
-
-  /**
-   * <code>true</code> if the browser is ie.
-   */
-  public static boolean isIE;
-
-  /**
-   * <code>true</code> if the browser is ie6.
-   */
-  public static boolean isIE6;
-
-  /**
-   * <code>true</code> if the browser is ie7.
-   */
-  public static boolean isIE7;
-
-  /**
-   * <code>true</code> if the browser is ie8.
-   */
-  public static boolean isIE8;
-  
-  /**
-   * <code>true</code> if the browser is ie8.
-   */
-  public static boolean isIE9;
 
   /**
    * <code>true</code> if the browser is gecko.
@@ -124,19 +80,34 @@ public class GXT {
   public static boolean isGecko35;
 
   /**
-   * <code>true</code> if the browser is in strict mode.
+   * True if the OS high contrast mode is enabled.
    */
-  public static boolean isStrict;
+  public static boolean isHighContrastMode = false;
 
   /**
-   * <code>true</code> if using https.
+   * <code>true</code> if the browser is ie.
    */
-  public static boolean isSecure;
+  public static boolean isIE;
 
   /**
-   * <code>true</code> if mac os.
+   * <code>true</code> if the browser is ie6.
    */
-  public static boolean isMac;
+  public static boolean isIE6;
+
+  /**
+   * <code>true</code> if the browser is ie7.
+   */
+  public static boolean isIE7;
+
+  /**
+   * <code>true</code> if the browser is ie8.
+   */
+  public static boolean isIE8;
+
+  /**
+   * <code>true</code> if the browser is ie8.
+   */
+  public static boolean isIE9;
 
   /**
    * <code>true</code> if linux os.
@@ -144,24 +115,64 @@ public class GXT {
   public static boolean isLinux;
 
   /**
+   * <code>true</code> if mac os.
+   */
+  public static boolean isMac;
+
+  /**
+   * <code>true</code> if the browser is opera.
+   */
+  public static boolean isOpera;
+
+  /**
+   * <code>true</code> if the browser is safari.
+   */
+  public static boolean isSafari;
+
+  /**
+   * <code>true</code> if the browser is safari2.
+   */
+  public static boolean isSafari2;
+
+  /**
+   * <code>true</code> if the browser is safari3.
+   */
+  public static boolean isSafari3;
+
+  /**
+   * <code>true</code> if the browser is safari4.
+   */
+  public static boolean isSafari4;
+
+  /**
+   * <code>true</code> if using https.
+   */
+  public static boolean isSecure;
+
+  /**
+   * <code>true</code> if the browser is in strict mode.
+   */
+  public static boolean isStrict;
+
+  /**
+   * <code>true</code> if the browser uses the webkit engine.
+   */
+  public static boolean isWebKit;
+
+  /**
    * <code>true</code> if windows os.
    */
   public static boolean isWindows;
 
   /**
-   * <code>true</code> if is air.
+   * GXT messages.
    */
-  public static boolean isAir;
+  public static XMessages MESSAGES = (XMessages) GWT.create(XMessages.class);
 
   /**
-   * <code>true</code> if is borderbox.
+   * Path to GXT resources (defaults to 'gxt').
    */
-  public static boolean isBorderBox;
-
-  /**
-   * <code>true</code> if the browser uses shims.
-   */
-  public static boolean useShims;
+  public static String RESOURCES_URL = "gxt";
 
   /**
    * URL to a blank file used by GXT when in secure mode for iframe src to
@@ -170,26 +181,15 @@ public class GXT {
   public static String SSL_SECURE_URL = GWT.getModuleBaseURL() + "blank.html";
 
   /**
-   * URL to a 1x1 transparent gif image used by GXT to create inline icons with
-   * CSS background images. Default value is '/images/default/shared/clear.gif';
+   * <code>true</code> if the browser uses shims.
    */
-  public static String BLANK_IMAGE_URL;
-  
-  /**
-   * Path to GXT resources (defaults to 'gxt').
-   */
-  public static String RESOURCES_URL = "gxt";
-
-  private static boolean initialized;
+  public static boolean useShims;
+  private static boolean ariaEnabled, focusManagerEnabled;
   private static Theme defaultTheme;
   private static boolean forceTheme;
-  private static Version version;
-  private static boolean ariaEnabled, focusManagerEnabled;
+  private static boolean initialized;
 
-  /**
-   * True if the OS high contrast mode is enabled.
-   */
-  public static boolean isHighContrastMode = false;
+  private static Version version;
 
   /**
    * Returns the auto id prefix.
@@ -273,12 +273,18 @@ public class GXT {
     String ua = getUserAgent();
 
     isOpera = ua.indexOf("opera") != -1;
+    
     isIE = !isOpera && ua.indexOf("msie") != -1;
-    isIE6 = !isOpera && ua.indexOf("msie 6") != -1;
-    isIE7 = !isOpera && ua.indexOf("msie 7") != -1;
-    isIE8 = !isOpera && ua.indexOf("msie 8") != -1;
-    isIE9 = !isOpera && ua.indexOf("msie 9") != -1;
-
+    if (!isOpera && isIE) {
+	  if (getDocumentMode() >= 9) {
+	    isIE9 = true;
+	  } else if (getDocumentMode() == 8) {
+	    isIE8 = true;
+	  } else {
+	    isIE6 = !isOpera && ua.indexOf("msie 6") != -1;
+	    isIE7 = !isOpera && ua.indexOf("msie 7") != -1;
+	  }
+	}
     isChrome = !isIE && ua.indexOf("chrome") != -1;
 
     isWebKit = ua.indexOf("webkit") != -1;
@@ -326,7 +332,7 @@ public class GXT {
 
     if (isIE) {
       bodyEl.addStyleName("ext-ie");
-      String cls = (isIE6 ? "ext-ie6" : (isIE7 ? "ext-ie7" : (isIE8 ? "ext-ie8" : (isIE9 ? "ext-ie8 ext-ie9" : null))));
+      String cls = (isIE6 ? "ext-ie6" : (isIE7 ? "ext-ie7" : (isIE8 ? "ext-ie8" : (isIE9 ? "ext-ie9" : null))));
       
       bodyEl.addStyleName(cls);
       if (isIE7 && isIE8compatibility()) {
@@ -364,25 +370,26 @@ public class GXT {
     }
     
     if (theme != null) {
-      final String themeId = theme.get("id").toString();
-      String fileName = theme.get("file").toString();
-      if (!fileName.contains("gxt-all.css") && !fileName.contains("gxt-all-rtl.css")) {
-    	  if(LocaleInfo.getCurrentLocale().isRTL())
-    	  {
-    		  int p=fileName.lastIndexOf(".css");
-    		  if(p!=-1)
-    		  {
-    			  fileName=fileName.substring(0,p)+"-rtl.css";
-    		  }
-    	  }
-        CSS.addStyleSheet(themeId, fileName);
-      }
-      bodyEl.addStyleName("x-theme-" + themeId);
+    	final String themeId = String.valueOf(theme.get("id"));
+        Theme t = ThemeManager.findTheme(themeId);
+        if (t != null) {
+          t.init();
+	      String fileName = theme.get("file").toString();
+	      if (!fileName.contains("gxt-all.css") && !fileName.contains("gxt-all-rtl.css")) {
+	    	  if(LocaleInfo.getCurrentLocale().isRTL())
+	    	  {
+	    		  int p=fileName.lastIndexOf(".css");
+	    		  if(p!=-1)
+	    		  {
+	    			  fileName=fileName.substring(0,p)+"-rtl.css";
+	    		  }
+	    	  }
+	        CSS.addStyleSheet(themeId, fileName);
+	      }
+	      bodyEl.addStyleName("x-theme-" + themeId);
+        }
 
-      Theme t = ThemeManager.findTheme(themeId);
-      t.init();
-
-      StateManager.get().set(GWT.getModuleBaseURL() + "theme", theme);
+        StateManager.get().set(GWT.getModuleBaseURL() + "theme", theme);
     }
 
     if (isStrict) { // add to the parent to allow for selectors like
@@ -427,19 +434,6 @@ public class GXT {
     setFocusManagerEnabled(enable);
   }
   
-  /**
-   * True to enable the focus manager.
-   * 
-   * @param enable true to enable
-   */
-  public static void setFocusManagerEnabled(boolean enable) {
-    focusManagerEnabled = enable;
-    if (enable) {
-      FocusManager.get().enable();
-    } else {
-      FocusManager.get().disable();
-    }
-  }
 
   /**
    * Sets the auto id prefix which is prepended to the auto id counter when
@@ -463,6 +457,20 @@ public class GXT {
     defaultTheme = theme;
     forceTheme = force;
   }
+  
+  /**
+   * True to enable the focus manager.
+   * 
+   * @param enable true to enable
+   */
+  public static void setFocusManagerEnabled(boolean enable) {
+    focusManagerEnabled = enable;
+    if (enable) {
+      FocusManager.get().enable();
+    } else {
+      FocusManager.get().disable();
+    }
+  }
 
   /**
    * Changes the theme. A theme's stylehseets should be given a class = to the
@@ -476,7 +484,11 @@ public class GXT {
     StateManager.get().set(GWT.getModuleBaseURL() + "theme", theme.asMap());
     XDOM.reload();
   }
-
+  
+  private static native int getDocumentMode() /*-{
+		return $doc.documentMode || -1
+  }-*/;
+  
   private native static boolean isIE8compatibility() /*-{
 	if (@com.extjs.gxt.ui.client.GXT::isIE7) {
 		if ($doc.documentMode) {

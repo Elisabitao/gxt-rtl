@@ -8,9 +8,6 @@
   <servlet path="/fileservice" class="com.extjs.gxt.samples.server.FileServiceImpl"/>
   <entry-point class='com.extjs.gxt.samples.client.Examples' />
   
-   <!-- English language, independent of country -->
-	<extend-property name="locale" values="en" />
-
 	<!-- Persian -->
 	<extend-property name="locale" values="fa_IR" />
 </module>

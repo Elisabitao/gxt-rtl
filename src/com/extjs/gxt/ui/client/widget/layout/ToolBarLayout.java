@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -276,7 +276,7 @@ public class ToolBarLayout extends Layout {
 
   protected void hideComponent(Component c) {
     c.setData("xtbWidth", c.el().getParent().getWidth());
-    c.setData("xtbIsVisible", c.isVisible(false));
+    c.setData("xtbIsVisible", c.isRendered() && !c.el().isStyleAttribute("display", "none"));
     hiddens.add(c);
     c.hide();
   }

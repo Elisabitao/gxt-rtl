@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -294,6 +294,9 @@ public class FieldSet extends LayoutContainer {
   protected void onClick(ComponentEvent ce) {
     if (checkboxToggle && ce.getTarget() == (Element) checkbox.cast()) {
       setExpanded(!isExpanded());
+      boolean isExpanded = isExpanded();
+      checkbox.setChecked(isExpanded);
+      checkbox.setDefaultChecked(isExpanded);
     }
   }
 

@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -22,6 +22,8 @@ import com.extjs.gxt.ui.client.util.BaseEventPreview;
 import com.extjs.gxt.ui.client.util.Rectangle;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Shim;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.DOM;
@@ -703,7 +705,14 @@ public class Draggable extends BaseObservable {
         }
         proxyEl.setVisibility(false);
         proxyEl.disableTextSelection(false);
-        proxyEl.remove();
+        Scheduler.get().scheduleDeferred(new ScheduledCommand()
+    	{
+    		@Override
+    		public void execute()
+    		{
+    			proxyEl.remove();
+    		}
+    	});
       }
       DragEvent de = new DragEvent(this);
       de.setStartElement(startElement);

@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -1470,8 +1470,8 @@ textarea {
   height: 13px;
   width: 13px;
 }
+/* RTL */
 .ext-ie .x-fieldset legend input {
-	position: absolute;
 }
 fieldset.x-panel-collapsed {
   padding-bottom: 0 !important;
@@ -1532,8 +1532,8 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 .x-fieldset {
   overflow: hidden;
 }
+/* RTL */
 .ext-ie .x-tool-toggle {
-	position: absolute;
 }
 
 .ext-ie .x-fieldset-header-text {

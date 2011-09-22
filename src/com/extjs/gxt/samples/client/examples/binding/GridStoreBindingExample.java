@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -138,7 +138,10 @@ public class GridStoreBindingExample extends LayoutContainer {
 
       public String render(Stock model, String property, ColumnData config, int rowIndex,
           int colIndex, ListStore<Stock> store, Grid<Stock> grid) {
-        double val = (Double) model.get(property);
+        Double val = (Double) model.get(property);
+        if (val == null) {
+          val = 0d;
+        }
         String style = val < 0 ? "red" : "green";
         return "<span style='color:" + style + "'>" + number.format(val) + "</span>";
       }

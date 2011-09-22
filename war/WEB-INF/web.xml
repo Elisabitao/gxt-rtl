@@ -30,6 +30,10 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>service</servlet-name>
+    <url-pattern>/com.extjs.gxt.samples.desktop.DesktopApp/service</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>service</servlet-name>
     <url-pattern>/com.extjs.gxt.samples.Examples/service</url-pattern>
   </servlet-mapping>
   <servlet-mapping>

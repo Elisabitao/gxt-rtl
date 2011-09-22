@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.3 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -241,15 +241,15 @@ html,body {
 }
 
 .add {
-  background-image: url(../../shared/icons/fam/add.gif) !important;
+  background-image: url(../images/add.gif) !important;
 }
 
 .option {
-  background-image: url(../../shared/icons/fam/plugin.gif) !important;
+  background-image: url(../images/plugin.gif) !important;
 }
 
 .remove {
-  background-image: url(../../shared/icons/fam/delete.gif) !important;
+  background-image: url(../images/delete.gif) !important;
 }
 
 .tabs {
@@ -620,10 +620,11 @@ td.ux-taskButtons-edge { /*float:left;*/
 }
 
 /* Desktop Shortcuts */
+/* RTL */
 #x-shortcuts dt {
-  float: left;
+  float: right;
   margin: 15px 0 0 15px;
-  clear: left;
+  clear: right;
   width: 64px;
   font: normal 10px tahoma, arial, verdana, sans-serif;
   text-align: center;

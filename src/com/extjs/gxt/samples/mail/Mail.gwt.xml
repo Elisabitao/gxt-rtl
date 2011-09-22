@@ -5,9 +5,6 @@
   <servlet path="/mailservice" class="com.extjs.gxt.samples.mail.server.MailServiceImpl"/>
   <entry-point class='com.extjs.gxt.samples.mail.client.Mail'/>
   
-   <!-- English language, independent of country -->
-	<extend-property name="locale" values="en" />
-
 	<!-- Persian -->
 	<extend-property name="locale" values="fa_IR" />
 </module>

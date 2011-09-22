@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -147,6 +147,7 @@ public class Tip extends ContentPanel {
     }
     setPagePosition(p.x + XDOM.getBodyScrollLeft(), p.y + XDOM.getBodyScrollTop());
     setStyleAttribute("visibility", "visible");
+    sync(true);
   }
 
   /**

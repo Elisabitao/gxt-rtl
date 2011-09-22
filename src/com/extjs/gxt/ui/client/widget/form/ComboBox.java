@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -560,6 +560,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
       return value;
     }
     if (store != null) {
+      store.clearFilters();
       getPropertyEditor().setList(store.getModels());
     }
 
@@ -1009,7 +1010,9 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
         forceSelection = f;
         return;
       }
-
+      if (!initialized) {
+    	createList(true);
+      }
       if (getValue() == null) {
         if (lastSelectionText != null && !"".equals(lastSelectionText)) {
           setRawValue(lastSelectionText);
@@ -1092,24 +1095,24 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
     };
 
     eventPreview = new BaseEventPreview() {
-      @Override
-      protected boolean onPreview(PreviewEvent pe) {
-        switch (pe.getType().getEventCode()) {
-          case Event.ONSCROLL:
-          case Event.ONMOUSEWHEEL:
-          case Event.ONMOUSEDOWN:
-            collapseIf(pe);
-            break;
-          case Event.ONKEYPRESS:
-            if (expanded && pe.getKeyCode() == KeyCodes.KEY_ENTER) {
-              pe.stopEvent();
-              onViewClick(pe, false);
-            }
-            break;
+        @Override
+        protected boolean onPreview(PreviewEvent pe) {
+          switch (pe.getType().getEventCode()) {
+            case Event.ONSCROLL:
+            case Event.ONMOUSEWHEEL:
+            case Event.ONMOUSEDOWN:
+              collapseIf(pe);
+              break;
+          }
+
+          if (pe.getType() == KeyNav.getKeyEvent() && expanded && pe.getKeyCode() == KeyCodes.KEY_ENTER
+              && (pageTb == null || !pageTb.getElement().isOrHasChild(pe.getTarget()))) {
+            pe.stopEvent();
+            onViewClick(pe, false);
+          }
+          return true;
         }
-        return true;
-      }
-    };
+      };
     eventPreview.setAutoHide(false);
 
     new KeyNav(this) {
@@ -1555,7 +1558,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
     doQuery(getRawValue(), false);
   }
 
-  private void selectNext() {
+  protected void selectNext() {
     int count = store.getCount();
     if (count > 0) {
       int selectedIndex = store.indexOf(selectedItem);
@@ -1567,7 +1570,7 @@ public class ComboBox<D extends ModelData> extends TriggerField<D> implements Se
     }
   }
 
-  private void selectPrev() {
+  protected void selectPrev() {
     int count = store.getCount();
     if (count > 0) {
       int selectedIndex = store.indexOf(selectedItem);

@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -889,7 +889,7 @@ public class El {
    * @return the width of the sides passed added together
    */
   public int getBorderWidth(String sides) {
-    int borderWidth = 0;
+	double borderWidth = 0;
     List<String> list = new ArrayList<String>();
     if (sides.contains("l")) {
       list.add("borderLeftWidth");
@@ -905,9 +905,9 @@ public class El {
     }
     FastMap<String> map = getStyleAttribute(list);
     for (String s : map.keySet()) {
-      borderWidth += Util.parseInt(map.get(s), 0);
+      borderWidth += Util.parseFloat(map.get(s), 0);
     }
-    return borderWidth;
+    return (int) Math.round(borderWidth);
   }
 
   /**
@@ -1050,8 +1050,8 @@ public class El {
    * @return the frame size
    */
   public Size getFrameSize() {
-    int width = 0;
-    int height = 0;
+    double width = 0;
+    double height = 0;
     List<String> list = new ArrayList<String>();
     list.add("paddingLeft");
     list.add("borderLeftWidth");
@@ -1068,12 +1068,12 @@ public class El {
     FastMap<String> map = getStyleAttribute(list);
     for (String s : map.keySet()) {
       if (isLeftorRight(s)) {
-        width += Util.parseInt(map.get(s), 0);
+        width += Util.parseFloat(map.get(s), 0);
       } else {
-        height += Util.parseInt(map.get(s), 0);
+        height += Util.parseFloat(map.get(s), 0);
       }
     }
-    return new Size(width, height);
+    return new Size((int) Math.round(width), (int) Math.round(height));
   }
 
   /**

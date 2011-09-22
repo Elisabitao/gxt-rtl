@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -11,7 +11,10 @@ import java.util.Map;
 
 import com.extjs.gxt.ui.client.core.XDOM;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.ScriptElement;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -37,10 +40,10 @@ public class ScriptTagProxy<D> implements DataProxy<D> {
 
   private static int ID = 0;
   private AsyncCallback<D> callback;
-  private DataReader<D> reader;
   private Object config;
-  private String url;
   private Element head = XDOM.getHead();
+  private DataReader<D> reader;
+  private String url;
 
   public ScriptTagProxy(String url) {
     this.url = url;
@@ -57,13 +60,12 @@ public class ScriptTagProxy<D> implements DataProxy<D> {
 
     createCallback(this, transId);
 
-    Element script = DOM.createElement("script");
-    script.setAttribute("src", u);
-    script.setAttribute("id", transId);
-    script.setAttribute("type", "text/javascript");
-    script.setAttribute("language", "JavaScript");
-
+    ScriptElement script = Document.get().createScriptElement();
+    script.setId(transId);
+    script.setType("text/javascript");
     head.appendChild(script);
+
+    script.setSrc(u);
   }
 
   /**
@@ -75,9 +77,16 @@ public class ScriptTagProxy<D> implements DataProxy<D> {
     this.url = url;
   }
 
-  protected void destroyTrans(String id) {
+  protected void destroyTrans(final String id) {
     head.removeChild(XDOM.getElementById(id));
-    removeCallback(id);
+    Scheduler.get().scheduleDeferred(new ScheduledCommand()
+	{
+		@Override
+		public void execute()
+		{
+			removeCallback(id);
+		}
+	});
   }
 
   protected String generateUrl(Object loadConfig) {

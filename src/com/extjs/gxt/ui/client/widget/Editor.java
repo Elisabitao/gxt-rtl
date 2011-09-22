@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -565,6 +565,7 @@ public class Editor extends BoxComponent {
     setElement(DOM.createDiv(), target, index);
 
     setStyleName("x-editor");
+    addStyleName("x-ignore");
     el().makePositionable(true);
     setStyleAttribute("overflow", GXT.isGecko && !GXT.isStrict ? "auto" : "hidden");
 

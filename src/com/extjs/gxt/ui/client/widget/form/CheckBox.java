@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -130,10 +130,10 @@ public class CheckBox extends Field<Boolean> {
       value = false;
     }
     focusValue = value;
-    super.setValue(value);
     if (rendered) {
       ((InputElement) input.dom.cast()).setDefaultChecked(value);
     }
+    super.setValue(value);
   }
 
   /**

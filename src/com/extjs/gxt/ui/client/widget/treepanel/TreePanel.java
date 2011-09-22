@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -604,7 +604,10 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
   public void scrollIntoView(M model) {
     TreeNode node = findNode(model);
     if (node != null) {
-      node.getElement().scrollIntoView();
+      Element c = getView().getElementContainer(node);
+      if (c != null) {
+        c.scrollIntoView();
+      }
     }
   }
 
@@ -672,6 +675,7 @@ public class TreePanel<M extends ModelData> extends BoxComponent implements Chec
     TreeNode node = findNode(item);
     if (node != null) {
       if (node.checked == checked) {
+        onCheckCascade(item, checked);
         return;
       }
 

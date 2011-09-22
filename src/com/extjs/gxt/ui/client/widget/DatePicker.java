@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -36,6 +36,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormatInfo;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.constants.DateTimeConstants;
 import com.google.gwt.user.client.DOM;
@@ -87,15 +88,15 @@ public class DatePicker extends BoxComponent {
    * DatePicker messages.
    */
   public class DatePickerMessages {
-    private String todayText = GXT.MESSAGES.datePicker_todayText();
-    private String okText = GXT.MESSAGES.datePicker_okText();
-    private String cancelText = GXT.MESSAGES.datePicker_cancelText();
-    private String todayTip = GXT.MESSAGES.datePicker_todayTip(DateTimeFormat.getShortDateFormat().format(new Date()));
-    private String minText = GXT.MESSAGES.datePicker_minText();
-    private String maxText = GXT.MESSAGES.datePicker_maxText();
-    private String prevText = GXT.MESSAGES.datePicker_prevText();
-    private String nextText = GXT.MESSAGES.datePicker_nextText();
-    private String monthYearText = GXT.MESSAGES.datePicker_monthYearText();
+	    private String cancelText = GXT.MESSAGES.datePicker_cancelText();
+	    private String maxText = GXT.MESSAGES.datePicker_maxText();
+	    private String minText = GXT.MESSAGES.datePicker_minText();
+	    private String monthYearText = GXT.MESSAGES.datePicker_monthYearText();
+	    private String nextText = GXT.MESSAGES.datePicker_nextText();
+	    private String okText = GXT.MESSAGES.datePicker_okText();
+	    private String prevText = GXT.MESSAGES.datePicker_prevText();
+	    private String todayText = GXT.MESSAGES.datePicker_todayText();
+	    private String todayTip = GXT.MESSAGES.datePicker_todayTip(DateTimeFormat.getShortDateFormat().format(new Date()));
 
     /**
      * Sets the text to display on the cancel button.
@@ -330,26 +331,27 @@ public class DatePicker extends BoxComponent {
 
   protected Button todayBtn;
 
-  private int firstDOW;
-  private Date minDate;
-  private Date maxDate;
-  private int startDay = Integer.MIN_VALUE;
-  private long today;
-  private int mpyear;
-  private Grid days, grid;
-  private Component header;
-  private com.google.gwt.user.client.ui.HorizontalPanel footer;
+
   private DateWrapper activeDate, value;
-  private int mpSelMonth, mpSelYear;
-  private Button monthBtn;
   private Element[] cells;
-  private Element[] textNodes;
-  private IconButton prevBtn, nextBtn;
-  private CompositeElement mpMonths, mpYears;
-  private El monthPicker;
-  private DateTimeConstants constants;
-  private DatePickerMessages messages;
+  private DateTimeFormatInfo constants;
+  private Grid days, grid;
+  private int firstDOW;
+  private com.google.gwt.user.client.ui.HorizontalPanel footer;
   private El gridWrapper;
+  private Component header;
+  private Date maxDate;
+  private DatePickerMessages messages;
+  private Date minDate;
+  private Button monthBtn;
+  private El monthPicker;
+  private CompositeElement mpMonths, mpYears;
+  private int mpSelMonth, mpSelYear;
+  private int mpyear;
+  private IconButton prevBtn, nextBtn;
+  private int startDay = Integer.MIN_VALUE;
+  private Element[] textNodes;
+  private long today;
 
   /**
    * Creates a new date picker.
@@ -357,7 +359,7 @@ public class DatePicker extends BoxComponent {
   public DatePicker() {
     baseStyle = "x-date-picker";
     messages = new DatePickerMessages();
-    constants = LocaleInfo.getCurrentLocale().getDateTimeConstants();
+    constants = LocaleInfo.getCurrentLocale().getDateTimeFormatInfo();
   }
 
   @Override
@@ -665,10 +667,10 @@ public class DatePicker extends BoxComponent {
     days.setCellSpacing(0);
     days.setBorderWidth(0);
 
-    String[] dn = constants.narrowWeekdays();
-    String[] longdn = constants.weekdays();
+    String[] dn = constants.weekdaysNarrow();
+    String[] longdn = constants.weekdaysFull();
     
-    firstDOW = startDay != Integer.MIN_VALUE ? startDay : Integer.parseInt(constants.firstDayOfTheWeek()) - 1;
+    firstDOW = getCalculatedStartDay();
 
     days.setHTML(0, 0, "<span>" + dn[(0 + firstDOW) % 7] + "</span>");
     days.setHTML(0, 1, "<span>" + dn[(1 + firstDOW) % 7] + "</span>");
@@ -833,7 +835,7 @@ public class DatePicker extends BoxComponent {
   private void createMonthPicker() {
     StringBuffer buf = new StringBuffer();
     buf.append("<table border=0 cellspacing=0>");
-    String[] monthNames = constants.shortMonths();
+    String[] monthNames = constants.monthsShort();
     for (int i = 0; i < 6; i++) {
       buf.append("<tr><td class=x-date-mp-month><a href=#>");
       buf.append(monthNames[i]);
@@ -872,7 +874,9 @@ public class DatePicker extends BoxComponent {
     });
 
   }
-
+  private int getCalculatedStartDay() {
+    return startDay != Integer.MIN_VALUE ? startDay : constants.firstDayOfTheWeek() - 1;
+  }
   private void handleDateClick(El target, String dt) {
     String[] tokens = dt.split(",");
     int year = Integer.parseInt(tokens[0]);
@@ -969,9 +973,12 @@ public class DatePicker extends BoxComponent {
       }
     }
     if (t > max || t < min) {
-      fly(cell).addStyleName("x-date-disabled");
-      cell.setTitle(messages.getMaxText());
-    }
+        fly(cell).addStyleName("x-date-disabled");
+        if (t > max)
+          cell.setTitle(messages.getMaxText());
+        else
+          cell.setTitle(messages.getMinText());        
+      }
   }
 
   private void showMonthPicker() {
@@ -1065,7 +1072,7 @@ public class DatePicker extends BoxComponent {
 
       int month = activeDate.getMonth();
 
-      String t = constants.standaloneMonths()[month] + " " + activeDate.getFullYear();
+      String t = constants.monthsFullStandalone()[month] + " " + activeDate.getFullYear();
       monthBtn.setText(t);
     }
   }

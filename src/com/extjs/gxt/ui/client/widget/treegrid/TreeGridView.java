@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -248,6 +248,17 @@ public class TreeGridView extends BufferView {
       }
     }
     return true;
+  }
+  @Override
+  public void refresh(boolean headerToo) {
+    if (grid != null && grid.isViewReady()) {
+      for (Object node : tree.nodes.values()) {
+        if (node instanceof TreeNode) {
+          ((TreeNode) node).clearElements();
+        }
+      }
+    }
+    super.refresh(headerToo);
   }
 
   public void onIconStyleChange(TreeNode node, AbstractImagePrototype icon) {

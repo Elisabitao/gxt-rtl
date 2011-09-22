@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -229,7 +229,7 @@ public class TreePanelDropTarget extends DropTarget {
         p = item.getModel();
         appendModel(p, sel, tree.getStore().getChildCount(item.getModel()));
       } else {
-        appendModel(p, sel, 0);
+    	appendModel(p, sel, tree.getStore().getRootItems().size());
       }
     }
   }

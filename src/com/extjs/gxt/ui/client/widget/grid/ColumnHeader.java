@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -378,21 +378,10 @@ public class ColumnHeader extends BoxComponent {
 			el().dom.appendChild(btn);
 
 			if (config.getWidget() != null) {
-				Element span = Document.get().createSpanElement().cast();
-				getElement().appendChild(span);
-
-				widget = config.getWidget();
-				if (widget instanceof Component) {
-					Component c = (Component) widget;
-					if (!c.isRendered()) {
-						c.render(span);
-					} else {
-						span.appendChild(c.getElement());
-					}
-
-				} else {
-					el().dom.appendChild(widget.getElement());
-				}
+		        Element span = Document.get().createSpanElement().cast();
+		        widget = config.getWidget();
+		        span.appendChild(widget.getElement());
+		        getElement().appendChild(span);
 			} else {
 				text = new Html(config.getHeader());
 				text.setTagName("span");

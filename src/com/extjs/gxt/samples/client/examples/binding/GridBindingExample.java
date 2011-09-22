@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -38,6 +38,7 @@ import com.extjs.gxt.ui.client.widget.table.NumberCellRenderer;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Element;
+
 public class GridBindingExample extends LayoutContainer {
 
   private FormBinding formBindings;
@@ -56,16 +57,15 @@ public class GridBindingExample extends LayoutContainer {
 
     Grid<Stock> grid = createGrid();
     grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-    grid.getSelectionModel().addListener(Events.SelectionChange,
-        new Listener<SelectionChangedEvent<Stock>>() {
-          public void handleEvent(SelectionChangedEvent<Stock> be) {
-            if (be.getSelection().size() > 0) {
-              formBindings.bind((ModelData) be.getSelection().get(0));
-            } else {
-              formBindings.unbind();
-            }
-          }
-        });
+    grid.getSelectionModel().addListener(Events.SelectionChange, new Listener<SelectionChangedEvent<Stock>>() {
+      public void handleEvent(SelectionChangedEvent<Stock> be) {
+        if (be.getSelection().size() > 0) {
+          formBindings.bind((ModelData) be.getSelection().get(0));
+        } else {
+          formBindings.unbind();
+        }
+      }
+    });
     cp.add(grid, new RowData(.6, 1));
 
     FormPanel panel = createForm();
@@ -112,22 +112,25 @@ public class GridBindingExample extends LayoutContainer {
   private Grid<Stock> createGrid() {
     final NumberFormat currency = NumberFormat.getCurrencyFormat();
     final NumberFormat number = NumberFormat.getFormat("0.00");
-    final NumberCellRenderer<Grid<Stock>> numberRenderer = new NumberCellRenderer<Grid<Stock>>(
-        currency);
+    final NumberCellRenderer<Grid<Stock>> numberRenderer = new NumberCellRenderer<Grid<Stock>>(currency);
 
     GridCellRenderer<Stock> change = new GridCellRenderer<Stock>() {
 
-      public String render(Stock model, String property, ColumnData config, int rowIndex,
-          int colIndex, ListStore<Stock> store, Grid<Stock> grid) {
-        double val = (Double) model.get(property);
+      public String render(Stock model, String property, ColumnData config, int rowIndex, int colIndex,
+          ListStore<Stock> store, Grid<Stock> grid) {
+
+        Double val = (Double) model.get(property);
+        if (val == null) {
+          val = 0d;
+        }
         String style = val < 0 ? "red" : "green";
         return "<span style='color:" + style + "'>" + number.format(val) + "</span>";
       }
     };
 
     GridCellRenderer<Stock> gridNumber = new GridCellRenderer<Stock>() {
-      public String render(Stock model, String property, ColumnData config, int rowIndex,
-          int colIndex, ListStore<Stock> store, Grid<Stock> grid) {
+      public String render(Stock model, String property, ColumnData config, int rowIndex, int colIndex,
+          ListStore<Stock> store, Grid<Stock> grid) {
         return numberRenderer.render(null, property, model.get(property));
       }
     };

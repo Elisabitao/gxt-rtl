@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -98,16 +98,6 @@ public class QuickTip extends ToolTip {
    */
   public void setInterceptTitles(boolean intercepTitiles) {
     this.interceptTitles = intercepTitiles;
-  }
-
-  @Override
-  protected void delayHide() {
-    if (!isAttached()) {
-      targetElem = null;
-      text = null;
-      title = null;
-    }
-    super.delayHide();
   }
 
   @Override

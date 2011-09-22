@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -184,6 +184,7 @@ public class Menu extends Container<Component> {
 				onEscape(pe);
 			}
 		};
+		eventPreview.setAutoHide(false);
 		// i18n stuff
 		if (LocaleInfo.getCurrentLocale().isRTL()) {
 			subMenuAlign = "tr-tl?";

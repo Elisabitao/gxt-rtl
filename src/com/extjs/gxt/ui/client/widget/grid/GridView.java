@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -73,37 +73,48 @@ import com.google.gwt.user.client.ui.Widget;
  * This class does not provide ways to manipulate the underlying data. The data
  * model of a Grid is held in an {@link ListStore}.
  */
-public class GridView extends BaseObservable {
+public class GridView extends BaseObservable
+{
 
 	/**
 	 * Icons used by Grid which can be overridden as needed. s
 	 */
-	public class GridViewImages {
-		private AbstractImagePrototype columns = AbstractImagePrototype.create(GXT.IMAGES.grid_columns());
-		private AbstractImagePrototype sortAsc = AbstractImagePrototype.create(GXT.IMAGES.grid_sortAsc());
-		private AbstractImagePrototype sortDesc = AbstractImagePrototype.create(GXT.IMAGES.grid_sortDesc());
+	public class GridViewImages
+	{
+		private AbstractImagePrototype columns = AbstractImagePrototype
+				.create(GXT.IMAGES.grid_columns());
+		private AbstractImagePrototype sortAsc = AbstractImagePrototype
+				.create(GXT.IMAGES.grid_sortAsc());
+		private AbstractImagePrototype sortDesc = AbstractImagePrototype
+				.create(GXT.IMAGES.grid_sortDesc());
 
-		public AbstractImagePrototype getColumns() {
+		public AbstractImagePrototype getColumns()
+		{
 			return columns;
 		}
 
-		public AbstractImagePrototype getSortAsc() {
+		public AbstractImagePrototype getSortAsc()
+		{
 			return sortAsc;
 		}
 
-		public AbstractImagePrototype getSortDesc() {
+		public AbstractImagePrototype getSortDesc()
+		{
 			return sortDesc;
 		}
 
-		public void setColumns(AbstractImagePrototype columnsIcon) {
+		public void setColumns(AbstractImagePrototype columnsIcon)
+		{
 			this.columns = columnsIcon;
 		}
 
-		public void setSortAsc(AbstractImagePrototype sortAscIcon) {
+		public void setSortAsc(AbstractImagePrototype sortAscIcon)
+		{
 			this.sortAsc = sortAscIcon;
 		}
 
-		public void setSortDesc(AbstractImagePrototype sortDescIcon) {
+		public void setSortDesc(AbstractImagePrototype sortDescIcon)
+		{
 			this.sortDesc = sortDescIcon;
 		}
 	}
@@ -149,9 +160,11 @@ public class GridView extends BaseObservable {
 
 	protected GridViewConfig viewConfig;
 	protected List<List<Widget>> widgetList = new ArrayList<List<Widget>>();
-	private DelayedTask addTask = new DelayedTask(new Listener<BaseEvent>() {
+	private DelayedTask addTask = new DelayedTask(new Listener<BaseEvent>()
+	{
 		@Override
-		public void handleEvent(BaseEvent be) {
+		public void handleEvent(BaseEvent be)
+		{
 			calculateVBar(false);
 			refreshFooterData();
 		}
@@ -160,9 +173,11 @@ public class GridView extends BaseObservable {
 	private String cellSelector = "td.x-grid3-cell";
 	private int cellSelectorDepth = 4;
 
-	private DelayedTask removeTask = new DelayedTask(new Listener<BaseEvent>() {
+	private DelayedTask removeTask = new DelayedTask(new Listener<BaseEvent>()
+	{
 		@Override
-		public void handleEvent(BaseEvent be) {
+		public void handleEvent(BaseEvent be)
+		{
 			calculateVBar(false);
 			applyEmptyText();
 			refreshFooterData();
@@ -178,31 +193,41 @@ public class GridView extends BaseObservable {
 	/**
 	 * Ensured the current row and column is visible.
 	 * 
-	 * @param row the row index
-	 * @param col the column index
-	 * @param hscroll true to scroll horizontally if needed
+	 * @param row
+	 *            the row index
+	 * @param col
+	 *            the column index
+	 * @param hscroll
+	 *            true to scroll horizontally if needed
 	 * @return the calculated point
 	 */
-	public Point ensureVisible(int row, int col, boolean hscroll) {
-		if (grid == null || !grid.isViewReady() || row < 0 || row > ds.getCount()) {
+	public Point ensureVisible(int row, int col, boolean hscroll)
+	{
+		if (grid == null || !grid.isViewReady() || row < 0
+				|| row > ds.getCount())
+		{
 			return null;
 		}
 
-		if (col == -1) {
+		if (col == -1)
+		{
 			col = 0;
 		}
 
 		Element rowEl = getRow(row);
 		Element cellEl = null;
-		if (!(!hscroll && col == 0)) {
-			while (cm.isHidden(col)) {
+		if (!(!hscroll && col == 0))
+		{
+			while (cm.isHidden(col))
+			{
 				col++;
 			}
 			cellEl = getCell(row, col);
 
 		}
 
-		if (rowEl == null) {
+		if (rowEl == null)
+		{
 			return null;
 		}
 
@@ -210,7 +235,8 @@ public class GridView extends BaseObservable {
 
 		int ctop = 0;
 		Element p = rowEl, stope = el.dom;
-		while (p != null && p != stope) {
+		while (p != null && p != stope)
+		{
 			ctop += p.getOffsetTop();
 			p = p.getOffsetParent().cast();
 		}
@@ -222,38 +248,49 @@ public class GridView extends BaseObservable {
 		int stop = c.getScrollTop();
 		int sbot = stop + ch;
 
-		if (ctop < stop) {
+		if (ctop < stop)
+		{
 			c.setScrollTop(ctop);
-		} else if (cbot > sbot) {
-			if (hscroll && (cm.getTotalWidth() > scroller.getWidth() - scrollOffset)) {
+		} else if (cbot > sbot)
+		{
+			if (hscroll
+					&& (cm.getTotalWidth() > scroller.getWidth() - scrollOffset))
+			{
 				cbot += scrollOffset;
 			}
 			c.setScrollTop(cbot -= ch);
 		}
 
-		if (hscroll && cellEl != null) {
+		if (hscroll && cellEl != null)
+		{
 			int cleft = cellEl.getOffsetLeft();
 			int cright = cleft + cellEl.getOffsetWidth();
 			int sleft = c.getScrollLeft();
 			int sright = sleft + c.getOffsetWidth();
-			if (cleft < sleft) {
+			if (cleft < sleft)
+			{
 				c.setScrollLeft(cleft);
-			} else if (cright > sright) {
+			} else if (cright > sright)
+			{
 				c.setScrollLeft(cright - scroller.getStyleWidth());
 			}
 		}
 
-		return cellEl != null ? fly(cellEl).getXY() : new Point(c.getScrollLeft(), fly(rowEl).getY());
+		return cellEl != null ? fly(cellEl).getXY() : new Point(
+				c.getScrollLeft(), fly(rowEl).getY());
 	}
 
 	/**
 	 * Returns the cell.
 	 * 
-	 * @param elem the cell element or a child element
+	 * @param elem
+	 *            the cell element or a child element
 	 * @return the cell element
 	 */
-	public Element findCell(Element elem) {
-		if (elem == null) {
+	public Element findCell(Element elem)
+	{
+		if (elem == null)
+		{
 			return null;
 		}
 		return fly(elem).findParentElement(cellSelector, cellSelectorDepth);
@@ -262,13 +299,19 @@ public class GridView extends BaseObservable {
 	/**
 	 * Returns the cell index.
 	 * 
-	 * @param elem the cell or child element
-	 * @param requiredStyle an optional required style name
+	 * @param elem
+	 *            the cell or child element
+	 * @param requiredStyle
+	 *            an optional required style name
 	 * @return the cell index or -1 if not found
 	 */
-	public int findCellIndex(Element elem, String requiredStyle) {
+	public int findCellIndex(Element elem, String requiredStyle)
+	{
 		Element cell = findCell(elem);
-		if (cell != null && (requiredStyle == null || fly(cell).hasStyleName(requiredStyle))) {
+		if (cell != null
+				&& (requiredStyle == null || fly(cell).hasStyleName(
+						requiredStyle)))
+		{
 			return getCellIndex(cell);
 		}
 		return -1;
@@ -277,11 +320,14 @@ public class GridView extends BaseObservable {
 	/**
 	 * Returns the row element.
 	 * 
-	 * @param el the row element or any child element
+	 * @param el
+	 *            the row element or any child element
 	 * @return the matching row element
 	 */
-	public Element findRow(Element el) {
-		if (el == null) {
+	public Element findRow(Element el)
+	{
+		if (el == null)
+		{
 			return null;
 		}
 		return fly(el).findParentElement(rowSelector, rowSelectorDepth);
@@ -290,10 +336,12 @@ public class GridView extends BaseObservable {
 	/**
 	 * Returns the row index.
 	 * 
-	 * @param elem the row or child of the row element
+	 * @param elem
+	 *            the row or child of the row element
 	 * @return the index
 	 */
-	public int findRowIndex(Element elem) {
+	public int findRowIndex(Element elem)
+	{
 		Element r = findRow(elem);
 		return r != null ? r.getPropertyInt("rowIndex") : -1;
 	}
@@ -301,15 +349,21 @@ public class GridView extends BaseObservable {
 	/**
 	 * Focus the cell and scrolls into view.
 	 * 
-	 * @param rowIndex the row index
-	 * @param colIndex the column index
-	 * @param hscroll true to scroll horizontally
+	 * @param rowIndex
+	 *            the row index
+	 * @param colIndex
+	 *            the column index
+	 * @param hscroll
+	 *            true to scroll horizontally
 	 */
-	public void focusCell(int rowIndex, int colIndex, boolean hscroll) {
+	public void focusCell(int rowIndex, int colIndex, boolean hscroll)
+	{
 		Point xy = ensureVisible(rowIndex, colIndex, hscroll);
-		if (xy != null) {
+		if (xy != null)
+		{
 			focusEl.setXY(xy);
-			if (focusEnabled) {
+			if (focusEnabled)
+			{
 				focusGrid();
 			}
 		}
@@ -318,9 +372,11 @@ public class GridView extends BaseObservable {
 	/**
 	 * Focus the row and scrolls into view.
 	 * 
-	 * @param rowIndex the row index
+	 * @param rowIndex
+	 *            the row index
 	 */
-	public void focusRow(int rowIndex) {
+	public void focusRow(int rowIndex)
+	{
 		focusCell(rowIndex, 0, true);
 	}
 
@@ -329,22 +385,27 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the body element
 	 */
-	public El getBody() {
+	public El getBody()
+	{
 		return scroller;
 	}
 
 	/**
 	 * Returns the grid's &lt;TD> HtmlElement at the specified coordinates.
 	 * 
-	 * @param row the row index in which to find the cell
-	 * @param col the column index of the cell
+	 * @param row
+	 *            the row index in which to find the cell
+	 * @param col
+	 *            the column index of the cell
 	 * @return the &lt;TD> at the specified coordinates
 	 */
-	public Element getCell(int row, int col) {
+	public Element getCell(int row, int col)
+	{
 		// ROW DIV TABLE TR TD
 		Element rowEl = getRow(row);
-		return (Element) ((rowEl != null && rowEl.hasChildNodes())
-				? rowEl.getFirstChild().getFirstChild().getFirstChild().getChildNodes().getItem(col) : null);
+		return (Element) ((rowEl != null && rowEl.hasChildNodes()) ? rowEl
+				.getFirstChild().getFirstChild().getFirstChild()
+				.getChildNodes().getItem(col) : null);
 	}
 
 	/**
@@ -352,7 +413,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the cell selector depth
 	 */
-	public int getCellSelectorDepth() {
+	public int getCellSelectorDepth()
+	{
 		return cellSelectorDepth;
 	}
 
@@ -361,7 +423,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the editor element
 	 */
-	public Element getEditorParent() {
+	public Element getEditorParent()
+	{
 		return scroller.dom;
 	}
 
@@ -370,7 +433,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the empty text
 	 */
-	public String getEmptyText() {
+	public String getEmptyText()
+	{
 		return emptyText;
 	}
 
@@ -379,18 +443,21 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the header
 	 */
-	public ColumnHeader getHeader() {
+	public ColumnHeader getHeader()
+	{
 		return header;
 	}
 
 	/**
-	 * Returns the &lt;TD> HtmlElement which represents the Grid's header cell for
-	 * the specified column index.
+	 * Returns the &lt;TD> HtmlElement which represents the Grid's header cell
+	 * for the specified column index.
 	 * 
-	 * @param index the column index
+	 * @param index
+	 *            the column index
 	 * @return the &lt;TD> element.
 	 */
-	public Element getHeaderCell(int index) {
+	public Element getHeaderCell(int index)
+	{
 		return mainHd.dom.getElementsByTagName("td").getItem(index);
 	}
 
@@ -399,8 +466,10 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the images
 	 */
-	public GridViewImages getImages() {
-		if (images == null) {
+	public GridViewImages getImages()
+	{
+		if (images == null)
+		{
 			images = new GridViewImages();
 		}
 		return images;
@@ -410,11 +479,14 @@ public class GridView extends BaseObservable {
 	 * Return the &lt;TR> HtmlElement which represents a Grid row for the
 	 * specified index.
 	 * 
-	 * @param row the row index
+	 * @param row
+	 *            the row index
 	 * @return the &lt;TR> element
 	 */
-	public Element getRow(int row) {
-		if (row < 0) {
+	public Element getRow(int row)
+	{
+		if (row < 0)
+		{
 			return null;
 		}
 		return getRows().getItem(row);
@@ -424,10 +496,12 @@ public class GridView extends BaseObservable {
 	 * Return the &lt;TR> HtmlElement which represents a Grid row for the
 	 * specified model.
 	 * 
-	 * @param m the model
+	 * @param m
+	 *            the model
 	 * @return the &lt;TR> element
 	 */
-	public Element getRow(ModelData m) {
+	public Element getRow(ModelData m)
+	{
 		return getRow(ds.indexOf(m));
 	}
 
@@ -436,7 +510,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the row selector depth
 	 */
-	public int getRowSelectorDepth() {
+	public int getRowSelectorDepth()
+	{
 		return rowSelectorDepth;
 	}
 
@@ -445,7 +520,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the scroll element
 	 */
-	public El getScroller() {
+	public El getScroller()
+	{
 		return scroller;
 	}
 
@@ -454,7 +530,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the scroll state
 	 */
-	public Point getScrollState() {
+	public Point getScrollState()
+	{
 		return new Point(scroller.getScrollLeft(), scroller.getScrollTop());
 	}
 
@@ -463,19 +540,24 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return the view config
 	 */
-	public GridViewConfig getViewConfig() {
+	public GridViewConfig getViewConfig()
+	{
 		return viewConfig;
 	}
 
 	/**
 	 * Returns the widget at the current location.
 	 * 
-	 * @param rowIndex the row index
-	 * @param colIndex the column index
+	 * @param rowIndex
+	 *            the row index
+	 * @param colIndex
+	 *            the column index
 	 * @return the widget or null
 	 */
-	public Widget getWidget(int rowIndex, int colIndex) {
-		List<Widget> map = rowIndex < widgetList.size() ? widgetList.get(rowIndex) : null;
+	public Widget getWidget(int rowIndex, int colIndex)
+	{
+		List<Widget> map = rowIndex < widgetList.size() ? widgetList
+				.get(rowIndex) : null;
 		return map != null && colIndex < map.size() ? map.get(colIndex) : null;
 	}
 
@@ -485,7 +567,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true if adjusting
 	 */
-	public boolean isAdjustForHScroll() {
+	public boolean isAdjustForHScroll()
+	{
 		return adjustForHScroll;
 	}
 
@@ -494,7 +577,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true for auto fill
 	 */
-	public boolean isAutoFill() {
+	public boolean isAutoFill()
+	{
 		return autoFill;
 	}
 
@@ -503,7 +587,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true for force fit
 	 */
-	public boolean isForceFit() {
+	public boolean isForceFit()
+	{
 		return forceFit;
 	}
 
@@ -512,7 +597,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true of dirty cell markers
 	 */
-	public boolean isShowDirtyCells() {
+	public boolean isShowDirtyCells()
+	{
 		return showDirtyCells;
 	}
 
@@ -521,7 +607,8 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true if enabled
 	 */
-	public boolean isShowInvalidCells() {
+	public boolean isShowInvalidCells()
+	{
 		return showInvalidCells;
 	}
 
@@ -530,36 +617,44 @@ public class GridView extends BaseObservable {
 	 * 
 	 * @return true for sorting
 	 */
-	public boolean isSortingEnabled() {
+	public boolean isSortingEnabled()
+	{
 		return !headerDisabled;
 	}
 
-	public void layout() {
+	public void layout()
+	{
 		layout(false);
 	}
 
 	/**
 	 * Rebuilds the grid using its current configuration and data.
 	 * 
-	 * @param headerToo true to refresh the header
+	 * @param headerToo
+	 *            true to refresh the header
 	 */
-	public void refresh(boolean headerToo) {
-		if (grid != null && grid.isViewReady()) {
+	public void refresh(boolean headerToo)
+	{
+		if (grid != null && grid.isViewReady())
+		{
 			stopEditing();
 
 			detachWidgets(0, -1, true);
 
-			if (!preventScrollToTopOnRefresh) {
+			if (!preventScrollToTopOnRefresh)
+			{
 				scrollToTop();
 			}
 			mainBody.setInnerHtml(renderRows(0, -1));
-			if (headerToo) {
+			if (headerToo)
+			{
 				sortState = null;
 				header.release();
 
 				newColumnHeader();
 				renderHeader();
-				if (grid.isAttached()) {
+				if (grid.isAttached())
+				{
 					ComponentHelper.doAttach(header);
 				}
 				header.setEnableColumnResizing(grid.isColumnResize());
@@ -568,14 +663,17 @@ public class GridView extends BaseObservable {
 			processRows(0, true);
 			renderWidgets(0, -1);
 
-			if (footer != null) {
+			if (footer != null)
+			{
 				ComponentHelper.doDetach(footer);
 				footer.el().removeFromParent();
 			}
-			if (cm.getAggregationRows().size() > 0) {
+			if (cm.getAggregationRows().size() > 0)
+			{
 				footer = new ColumnFooter(grid, cm);
 				renderFooter();
-				if (grid.isAttached()) {
+				if (grid.isAttached())
+				{
 					ComponentHelper.doAttach(footer);
 				}
 			}
@@ -594,7 +692,8 @@ public class GridView extends BaseObservable {
 	/**
 	 * Scrolls the grid to the top.
 	 */
-	public void scrollToTop() {
+	public void scrollToTop()
+	{
 		scroller.setScrollTop(0);
 		scroller.setScrollLeft(0);
 	}
@@ -603,9 +702,11 @@ public class GridView extends BaseObservable {
 	 * True to adjust the grid width when the horizontal scrollbar is hidden and
 	 * visible (defaults to true).
 	 * 
-	 * @param adjustForHScroll true to adjust for horizontal scroll bar
+	 * @param adjustForHScroll
+	 *            true to adjust for horizontal scroll bar
 	 */
-	public void setAdjustForHScroll(boolean adjustForHScroll) {
+	public void setAdjustForHScroll(boolean adjustForHScroll)
+	{
 		this.adjustForHScroll = adjustForHScroll;
 	}
 
@@ -613,9 +714,11 @@ public class GridView extends BaseObservable {
 	 * True to auto expand the columns to fit the grid <b>when the grid is
 	 * created</b>.
 	 * 
-	 * @param autoFill true to expand
+	 * @param autoFill
+	 *            true to expand
 	 */
-	public void setAutoFill(boolean autoFill) {
+	public void setAutoFill(boolean autoFill)
+	{
 		this.autoFill = autoFill;
 	}
 
@@ -623,9 +726,11 @@ public class GridView extends BaseObservable {
 	 * The number of levels to search for cells in event delegation (defaults to
 	 * 4).
 	 * 
-	 * @param cellSelectorDepth the cell selector depth
+	 * @param cellSelectorDepth
+	 *            the cell selector depth
 	 */
-	public void setCellSelectorDepth(int cellSelectorDepth) {
+	public void setCellSelectorDepth(int cellSelectorDepth)
+	{
 		this.cellSelectorDepth = cellSelectorDepth;
 	}
 
@@ -633,19 +738,23 @@ public class GridView extends BaseObservable {
 	 * Default text to display in the grid body when no rows are available
 	 * (defaults to '').
 	 * 
-	 * @param emptyText the empty text
+	 * @param emptyText
+	 *            the empty text
 	 */
-	public void setEmptyText(String emptyText) {
+	public void setEmptyText(String emptyText)
+	{
 		this.emptyText = emptyText;
 	}
 
 	/**
-	 * True to auto expand/contract the size of the columns to fit the grid width
-	 * and prevent horizontal scrolling.
+	 * True to auto expand/contract the size of the columns to fit the grid
+	 * width and prevent horizontal scrolling.
 	 * 
-	 * @param forceFit true to force fit
+	 * @param forceFit
+	 *            true to force fit
 	 */
-	public void setForceFit(boolean forceFit) {
+	public void setForceFit(boolean forceFit)
+	{
 		this.forceFit = forceFit;
 	}
 
@@ -653,29 +762,35 @@ public class GridView extends BaseObservable {
 	 * The number of levels to search for rows in event delegation (defaults to
 	 * 10).
 	 * 
-	 * @param rowSelectorDepth the row selector depth
+	 * @param rowSelectorDepth
+	 *            the row selector depth
 	 */
-	public void setRowSelectorDepth(int rowSelectorDepth) {
+	public void setRowSelectorDepth(int rowSelectorDepth)
+	{
 		this.rowSelectorDepth = rowSelectorDepth;
 	}
 
 	/**
-	 * True to display a red triangle in the upper left corner of any cells which
-	 * are "dirty" as defined by any existing records in the data store (defaults
-	 * to true).
+	 * True to display a red triangle in the upper left corner of any cells
+	 * which are "dirty" as defined by any existing records in the data store
+	 * (defaults to true).
 	 * 
-	 * @param showDirtyCells true to display the dirty flag
+	 * @param showDirtyCells
+	 *            true to display the dirty flag
 	 */
-	public void setShowDirtyCells(boolean showDirtyCells) {
+	public void setShowDirtyCells(boolean showDirtyCells)
+	{
 		this.showDirtyCells = showDirtyCells;
 	}
 
 	/**
 	 * True to enabled invalid cell markers (defaults to false).
 	 * 
-	 * @param showInvalidCells true to enable
+	 * @param showInvalidCells
+	 *            true to enable
 	 */
-	public void setShowInvalidCells(boolean showInvalidCells) {
+	public void setShowInvalidCells(boolean showInvalidCells)
+	{
 		this.showInvalidCells = showInvalidCells;
 	}
 
@@ -683,36 +798,50 @@ public class GridView extends BaseObservable {
 	 * True to allow column sorting when the user clicks a column (defaults to
 	 * true).
 	 * 
-	 * @param sortable true for sortable columns
+	 * @param sortable
+	 *            true for sortable columns
 	 */
-	public void setSortingEnabled(boolean sortable) {
+	public void setSortingEnabled(boolean sortable)
+	{
 		this.headerDisabled = !sortable;
 	}
 
 	/**
 	 * Sets the view config.
 	 * 
-	 * @param viewConfig the view config
+	 * @param viewConfig
+	 *            the view config
 	 */
-	public void setViewConfig(GridViewConfig viewConfig) {
+	public void setViewConfig(GridViewConfig viewConfig)
+	{
 		this.viewConfig = viewConfig;
 	}
 
-	protected void addRowStyle(Element elem, String style) {
-		if (elem != null) {
+	protected void addRowStyle(Element elem, String style)
+	{
+		if (elem != null)
+		{
 			fly(elem).addStyleName(style);
 		}
 	}
 
-	protected void afterRender() {
+	protected void afterRender()
+	{
 
 		mainBody.setInnerHtml(renderRows(0, -1));
 		renderWidgets(0, -1);
 		processRows(0, true);
+
+		if (footer != null && grid.getLazyRowRender() > 0)
+		{
+			footer.refresh();
+		}
+
 		int sh = scroller.getHeight();
 		int dh = mainBody.getHeight();
 		boolean vbar = dh < sh;
-		if (vbar) {
+		if (vbar)
+		{
 			this.vbar = !vbar;
 			lastViewWidth = -1;
 			layout();
@@ -722,32 +851,45 @@ public class GridView extends BaseObservable {
 
 	}
 
-	protected void applyEmptyText() {
-		if (emptyText == null) {
+	protected void applyEmptyText()
+	{
+		if (emptyText == null)
+		{
 			emptyText = "&nbsp;";
 		}
-		if (!hasRows()) {
-			mainBody.setInnerHtml("<div class='x-grid-empty'>" + emptyText + "</div>");
+		if (!hasRows())
+		{
+			mainBody.setInnerHtml("<div class='x-grid-empty'>" + emptyText
+					+ "</div>");
 		}
 		syncHScroll();
 	}
 
-	protected void autoExpand(boolean preventUpdate) {
-		if (!userResized && grid.getAutoExpandColumn() != null) {
+	protected void autoExpand(boolean preventUpdate)
+	{
+		if (!userResized && grid.getAutoExpandColumn() != null)
+		{
 			int tw = cm.getTotalWidth(false);
 			int aw = grid.getWidth(true) - getScrollAdjust();
-			if (tw != aw) {
+			if (tw != aw)
+			{
 				int ci = cm.getIndexById(grid.getAutoExpandColumn());
 				assert ci != Style.DEFAULT : "auto expand column not found";
-				if (cm.isHidden(ci)) {
+				if (cm.isHidden(ci))
+				{
 					return;
 				}
 				int currentWidth = cm.getColumnWidth(ci);
-				int cw = Math.min(Math.max(((aw - tw) + currentWidth), grid.getAutoExpandMin()), grid.getAutoExpandMax());
-				if (cw != currentWidth) {
+				int cw = Math.min(
+						Math.max(((aw - tw) + currentWidth),
+								grid.getAutoExpandMin()),
+						grid.getAutoExpandMax());
+				if (cw != currentWidth)
+				{
 					cm.setColumnWidth(ci, cw, true);
 
-					if (!preventUpdate) {
+					if (!preventUpdate)
+					{
 						updateColumnWidth(ci, cw);
 					}
 				}
@@ -755,35 +897,44 @@ public class GridView extends BaseObservable {
 		}
 	}
 
-	protected void calculateVBar(boolean force) {
-		if (force) {
+	protected void calculateVBar(boolean force)
+	{
+		if (force)
+		{
 			resize();
 		}
 		int sh = scroller.getHeight();
 		int dh = mainBody.getHeight();
 		boolean vbar = dh > sh;
-		if (force || this.vbar != vbar) {
+		if (force || this.vbar != vbar)
+		{
 			this.vbar = vbar;
 			lastViewWidth = -1;
 			layout(true);
 		}
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	protected GridEvent<?> createComponentEvent(Event event) {
+	@SuppressWarnings(
+	{ "rawtypes", "unchecked" })
+	protected GridEvent<?> createComponentEvent(Event event)
+	{
 		return new GridEvent(grid, event);
 	}
 
-	protected Menu createContextMenu(final int colIndex) {
+	protected Menu createContextMenu(final int colIndex)
+	{
 		final Menu menu = new Menu();
 
-		if (cm.isSortable(colIndex)) {
+		if (cm.isSortable(colIndex))
+		{
 			MenuItem item = new MenuItem();
 			item.setText(GXT.MESSAGES.gridView_sortAscText());
 			item.setIcon(getImages().getSortAsc());
-			item.addSelectionListener(new SelectionListener<MenuEvent>() {
+			item.addSelectionListener(new SelectionListener<MenuEvent>()
+			{
 				@Override
-				public void componentSelected(MenuEvent ce) {
+				public void componentSelected(MenuEvent ce)
+				{
 					doSort(colIndex, SortDir.ASC);
 				}
 
@@ -793,9 +944,11 @@ public class GridView extends BaseObservable {
 			item = new MenuItem();
 			item.setText(GXT.MESSAGES.gridView_sortDescText());
 			item.setIcon(getImages().getSortDesc());
-			item.addSelectionListener(new SelectionListener<MenuEvent>() {
+			item.addSelectionListener(new SelectionListener<MenuEvent>()
+			{
 				@Override
-				public void componentSelected(MenuEvent ce) {
+				public void componentSelected(MenuEvent ce)
+				{
 					doSort(colIndex, SortDir.DESC);
 				}
 			});
@@ -810,8 +963,10 @@ public class GridView extends BaseObservable {
 		final Menu columnMenu = new Menu();
 
 		int cols = cm.getColumnCount();
-		for (int i = 0; i < cols; i++) {
-			if (shouldNotCount(i, false)) {
+		for (int i = 0; i < cols; i++)
+		{
+			if (shouldNotCount(i, false))
+			{
 				continue;
 			}
 			final int fcol = i;
@@ -819,9 +974,11 @@ public class GridView extends BaseObservable {
 			check.setHideOnClick(false);
 			check.setText(cm.getColumnHeader(i));
 			check.setChecked(!cm.isHidden(i));
-			check.addSelectionListener(new SelectionListener<MenuEvent>() {
+			check.addSelectionListener(new SelectionListener<MenuEvent>()
+			{
 				@Override
-				public void componentSelected(MenuEvent ce) {
+				public void componentSelected(MenuEvent ce)
+				{
 					cm.setHidden(fcol, !cm.isHidden(fcol));
 					restrictMenu(columnMenu);
 				}
@@ -830,57 +987,71 @@ public class GridView extends BaseObservable {
 		}
 
 		restrictMenu(columnMenu);
-
+		columns.setEnabled(columnMenu.getItemCount() > 0);
 		columns.setSubMenu(columnMenu);
 		menu.add(columns);
 		return menu;
 	}
 
-	protected void detachWidget(int rowIndex, boolean remove) {
-		List<Widget> m = rowIndex < widgetList.size() ? widgetList.get(rowIndex) : null;
-		if (m != null) {
-			for (Widget w : m) {
+	protected void detachWidget(int rowIndex, boolean remove)
+	{
+		List<Widget> m = rowIndex < widgetList.size() ? widgetList
+				.get(rowIndex) : null;
+		if (m != null)
+		{
+			for (Widget w : m)
+			{
 				ComponentHelper.doDetach(w);
-				if (w != null) {
+				if (w != null)
+				{
 					El.fly(w.getElement()).removeFromParent();
 				}
 			}
-			if (remove) {
+			if (remove)
+			{
 				widgetList.remove(rowIndex);
 			}
 		}
 	}
 
-	protected void detachWidgets(int startRow, int endRow, boolean remove) {
-		if (endRow == -1) {
+	protected void detachWidgets(int startRow, int endRow, boolean remove)
+	{
+		if (endRow == -1)
+		{
 			endRow = widgetList.size() - 1;
 		}
-		for (int i = endRow; i >= startRow; i--) {
+		for (int i = endRow; i >= startRow; i--)
+		{
 			detachWidget(i, remove);
 		}
 
 	}
 
-	protected void doAttach() {
+	protected void doAttach()
+	{
 		ComponentHelper.doAttach(header);
 		ComponentHelper.doAttach(footer);
 		resize();
 		renderWidgets(0, -1);
 	}
 
-	protected void doDetach() {
+	protected void doDetach()
+	{
 		ComponentHelper.doDetach(header);
 		ComponentHelper.doDetach(footer);
 		detachWidgets(0, -1, false);
 	}
 
-	protected String doRender(List<ColumnData> cs, List<ModelData> rows, int startRow, int colCount, boolean stripe) {
+	protected String doRender(List<ColumnData> cs, List<ModelData> rows,
+			int startRow, int colCount, boolean stripe)
+	{
 		int last = colCount - 1;
 		String tstyle = "width:" + getTotalWidth() + "px;";
 
 		StringBuilder buf = new StringBuilder();
 
-		for (int j = 0; j < rows.size(); j++) {
+		for (int j = 0; j < rows.size(); j++)
+		{
 			ModelData model = (ModelData) rows.get(j);
 
 			model = prepareData(model);
@@ -888,38 +1059,50 @@ public class GridView extends BaseObservable {
 			Record r = ds.hasRecord(model) ? ds.getRecord(model) : null;
 
 			int rowBodyColSpanCount = colCount;
-			if (enableRowBody) {
-				if (grid.getSelectionModel() instanceof CheckBoxSelectionModel<?>) {
-					CheckBoxSelectionModel<?> sm = (CheckBoxSelectionModel<?>) grid.getSelectionModel();
-					if (cm.getColumnById(sm.getColumn().getId()) != null) {
+			if (enableRowBody)
+			{
+				if (grid.getSelectionModel() instanceof CheckBoxSelectionModel<?>)
+				{
+					CheckBoxSelectionModel<?> sm = (CheckBoxSelectionModel<?>) grid
+							.getSelectionModel();
+					if (cm.getColumnById(sm.getColumn().getId()) != null)
+					{
 						rowBodyColSpanCount--;
 					}
 				}
-				for (ColumnConfig c : cm.getColumns()) {
-					if (c instanceof RowExpander || c instanceof RowNumberer) {
+				for (ColumnConfig c : cm.getColumns())
+				{
+					if (c instanceof RowExpander || c instanceof RowNumberer)
+					{
 						rowBodyColSpanCount--;
 					}
 				}
 			}
 			int rowIndex = (j + startRow);
 
-			if (GXT.isAriaEnabled()) {
+			if (GXT.isAriaEnabled())
+			{
 				buf.append("<div role=\"row\" aria-level=\"2\" class=\"x-grid3-row ");
-			} else {
+			} else
+			{
 				buf.append("<div class=\"x-grid3-row ");
 			}
 
-			if (stripe && ((rowIndex + 1) % 2 == 0)) {
+			if (stripe && ((rowIndex + 1) % 2 == 0))
+			{
 				buf.append(" x-grid3-row-alt");
 			}
-			if (!selectable) {
+			if (!selectable)
+			{
 				buf.append(" x-unselectable-single");
 			}
 
-			if (showDirtyCells && r != null && r.isDirty()) {
+			if (showDirtyCells && r != null && r.isDirty())
+			{
 				buf.append(" x-grid3-dirty-row");
 			}
-			if (viewConfig != null) {
+			if (viewConfig != null)
+			{
 				buf.append(" ");
 				buf.append(viewConfig.getRowStyle(model, rowIndex, ds));
 			}
@@ -928,20 +1111,26 @@ public class GridView extends BaseObservable {
 			buf.append("\" id=\"");
 			buf.append(grid.getId());
 			buf.append("_");
-			buf.append(ds.getKeyProvider() != null ? ds.getKeyProvider().getKey(model) : XDOM.getUniqueId());
+			buf.append(ds.getKeyProvider() != null ? ds.getKeyProvider()
+					.getKey(model) : XDOM.getUniqueId());
+			buf.append("\" unselectable=\"");
+			buf.append(selectable ? "off" : "on");
 			buf.append("\"><table class=x-grid3-row-table role=presentation border=0 cellspacing=0 cellpadding=0 style=\"");
 
 			buf.append(tstyle);
 			buf.append("\"><tbody role=presentation><tr role=presentation>");
 			widgetList.add(rowIndex, new ArrayList<Widget>());
-			for (int i = 0; i < colCount; i++) {
+			for (int i = 0; i < colCount; i++)
+			{
 				ColumnData c = cs.get(i);
 				c.css = c.css == null ? "" : c.css;
 				String rv = getRenderedValue(c, rowIndex, i, model, c.name);
 				String role = "gridcell";
-				if (GXT.isAriaEnabled()) {
+				if (GXT.isAriaEnabled())
+				{
 					ColumnConfig cc = cm.getColumn(i);
-					if (cc.isRowHeader()) {
+					if (cc.isRowHeader())
+					{
 						role = "rowheader";
 					}
 				}
@@ -949,18 +1138,24 @@ public class GridView extends BaseObservable {
 				String attr = c.cellAttr != null ? c.cellAttr : "";
 				String cellAttr = c.cellAttr != null ? c.cellAttr : "";
 
-				buf.append("<td id=\"" + XDOM.getUniqueId() + "\" role=\"" + role
+				buf.append("<td id=\"" + XDOM.getUniqueId() + "\" role=\""
+						+ role
 						+ "\" class=\"x-grid3-col x-grid3-cell x-grid3-td-");
 				buf.append(c.id);
 				buf.append(" ");
-				buf.append(i == 0 ? "x-grid-cell-first " : (i == last ? "x-grid3-cell-last " : ""));
-				if (c.css != null) {
+				buf.append(i == 0 ? "x-grid-cell-first "
+						: (i == last ? "x-grid3-cell-last " : ""));
+				if (c.css != null)
+				{
 					buf.append(c.css);
 				}
-				if (showInvalidCells && r != null && !r.isValid(c.id)) {
+				if (showInvalidCells && r != null && !r.isValid(c.name))
+				{
 					buf.append(" x-grid3-invalid-cell");
 				}
-				if (showDirtyCells && r != null && r.getChanges().containsKey(c.id)) {
+				if (showDirtyCells && r != null
+						&& r.getChanges().containsKey(c.name))
+				{
 					buf.append(" x-grid3-dirty-cell");
 				}
 
@@ -980,7 +1175,8 @@ public class GridView extends BaseObservable {
 			}
 
 			buf.append("</tr>");
-			if (enableRowBody) {
+			if (enableRowBody)
+			{
 				buf.append("<tr class=x-grid3-row-body-tr style=\"\"><td colspan=");
 				buf.append(rowBodyColSpanCount);
 				buf.append(" class=x-grid3-body-cell><div class=x-grid3-row-body>${body}</div></td></tr>");
@@ -991,32 +1187,39 @@ public class GridView extends BaseObservable {
 		return buf.toString();
 	}
 
-	protected void doSort(int colIndex, SortDir sortDir) {
+	protected void doSort(int colIndex, SortDir sortDir)
+	{
 		ds.sort(cm.getDataIndex(colIndex), sortDir);
 	}
 
-	protected void fitColumns(boolean preventRefresh, boolean onlyExpand, int omitColumn) {
+	protected void fitColumns(boolean preventRefresh, boolean onlyExpand,
+			int omitColumn)
+	{
 		int tw = cm.getTotalWidth(false);
 		double aw = grid.el().getWidth(true) - getScrollAdjust();
-		if (aw <= 0) {
+		if (aw <= 0)
+		{
 			aw = grid.el().getStyleWidth();
 		}
 
-		if (aw < 20 || aw > 2000) { // not initialized, so don't screw up the
+		if (aw < 20 || aw > 2000)
+		{ // not initialized, so don't screw up the
 			// default widths
 			return;
 		}
 
 		int extra = (int) aw - tw;
 
-		if (extra == 0) {
+		if (extra == 0)
+		{
 			return;
 		}
 
 		int vc = cm.getColumnCount(true);
 		int ac = vc - (omitColumn != -1 ? 1 : 0);
 
-		if (ac == 0) {
+		if (ac == 0)
+		{
 			ac = 1;
 			omitColumn = -1;
 		}
@@ -1026,8 +1229,10 @@ public class GridView extends BaseObservable {
 		int width = 0;
 		int w;
 
-		for (int i = 0; i < colCount; i++) {
-			if (!cm.isHidden(i) && !cm.isFixed(i) && i != omitColumn) {
+		for (int i = 0; i < colCount; i++)
+		{
+			if (!cm.isHidden(i) && !cm.isFixed(i) && i != omitColumn)
+			{
 				w = cm.getColumnWidth(i);
 				cols.push(i);
 				cols.push(w);
@@ -1036,31 +1241,42 @@ public class GridView extends BaseObservable {
 		}
 
 		double frac = (aw - cm.getTotalWidth()) / width;
-		while (cols.size() > 0) {
+		while (cols.size() > 0)
+		{
 			w = cols.pop();
 			int i = cols.pop();
-			int ww = Math.max(grid.getMinColumnWidth(), (int) Math.floor(w + w * frac));
+			int ww = Math.max(grid.getMinColumnWidth(),
+					(int) Math.floor(w + w * frac));
 			cm.setColumnWidth(i, ww, true);
 		}
 
-		if (!preventRefresh) {
+		if (!preventRefresh)
+		{
 			updateAllColumnWidths();
 		}
 	}
 
-	protected El fly(Element elem) {
+	protected El fly(Element elem)
+	{
 		return El.fly(elem, "grid");
 	}
 
-	protected void focusGrid() {
-		if (GXT.isIE){
+	protected void focusGrid()
+	{
+		if (GXT.isIE)
+		{
 			Scheduler.get().scheduleDeferred(new ScheduledCommand()
 			{
 				@Override
-				public void execute() {
-					if (LocaleInfo.getCurrentLocale().isRTL()) {
-						// special fix for IE in RTL the change applied on the fliweight dom causes a reset on the scrollTop, scrollLeft
-						// so we need to reset them to their values before the focus occured.
+				public void execute()
+				{
+					if (LocaleInfo.getCurrentLocale().isRTL())
+					{
+						// special fix for IE in RTL the change applied on the
+						// fliweight dom causes a reset on the scrollTop,
+						// scrollLeft
+						// so we need to reset them to their values before the
+						// focus occured.
 						int topBeforeFocus = scroller.getScrollTop();
 						int leftBeforeFocus = scroller.getScrollLeft();
 						focusEl.setFocus(true);
@@ -1068,31 +1284,37 @@ public class GridView extends BaseObservable {
 							scroller.setScrollTop(topBeforeFocus);
 						if (scroller.getScrollLeft() != leftBeforeFocus)
 							scroller.setScrollLeft(leftBeforeFocus);
-					}
-					else {
+					} else
+					{
 						focusEl.setFocus(true);
 					}
 				}
 			});
-		}else {
+		} else
+		{
 			focusEl.setFocus(true);
 		}
 	}
 
-	protected int getCellIndex(Element elem) {
-		if (elem != null) {
+	protected int getCellIndex(Element elem)
+	{
+		if (elem != null)
+		{
 			String id = getCellIndexId(elem);
-			if (id != null) {
+			if (id != null)
+			{
 				return cm.getIndexById(id);
 			}
 		}
 		return -1;
 	}
 
-	protected List<ColumnData> getColumnData() {
+	protected List<ColumnData> getColumnData()
+	{
 		int colCount = cm.getColumnCount();
 		List<ColumnData> cs = new ArrayList<ColumnData>();
-		for (int i = 0; i < colCount; i++) {
+		for (int i = 0; i < colCount; i++)
+		{
 			String name = cm.getDataIndex(i);
 			ColumnData data = new ColumnData();
 			data.name = name == null ? cm.getColumnId(i) : name;
@@ -1104,43 +1326,56 @@ public class GridView extends BaseObservable {
 		return cs;
 	}
 
-	protected String getColumnStyle(int colIndex, boolean isHeader) {
+	protected String getColumnStyle(int colIndex, boolean isHeader)
+	{
 		String style = !isHeader ? cm.getColumnStyle(colIndex) : "";
-		if (style == null) style = "";
+		if (style == null)
+			style = "";
 		int adj = GXT.isWebKit ? 2 : 0;
 		style += "width:" + (getColumnWidth(colIndex) + adj) + "px;";
-		if (cm.isHidden(colIndex)) {
+		if (cm.isHidden(colIndex))
+		{
 			style += "display:none;";
 		}
 		HorizontalAlignment align = cm.getColumnAlignment(colIndex);
-		if (align != null) {
+		if (align != null)
+		{
 			align = Style.convertHorizontalAlignmentToStrict(align);
 			style += "text-align:" + align.name().toLowerCase() + ";";
 		}
 		return style;
 	}
 
-	protected int getColumnWidth(int col) {
+	protected int getColumnWidth(int col)
+	{
 		int w = cm.getColumnWidth(col);
-		return (GXT.isBorderBox ? w : (w - borderWidth > 0 ? w - borderWidth : 0));
+		return (GXT.isBorderBox ? w : (w - borderWidth > 0 ? w - borderWidth
+				: 0));
 	}
 
-	protected int getOffsetWidth() {
+	protected int getOffsetWidth()
+	{
 		return (getTotalWidth() + getScrollAdjust());
 	}
 
-	protected String getRenderedValue(ColumnData data, int rowIndex, int colIndex, ModelData m, String property) {
+	protected String getRenderedValue(ColumnData data, int rowIndex,
+			int colIndex, ModelData m, String property)
+	{
 		GridCellRenderer<ModelData> r = cm.getRenderer(colIndex);
 		List<Widget> rowMap = widgetList.get(rowIndex);
 		rowMap.add(colIndex, null);
-		if (r != null) {
-			Object o = r.render(ds.getAt(rowIndex), property, data, rowIndex, colIndex, ds, grid);
-			if (o instanceof Widget) {
+		if (r != null)
+		{
+			Object o = r.render(ds.getAt(rowIndex), property, data, rowIndex,
+					colIndex, ds, grid);
+			if (o instanceof Widget)
+			{
 				Widget w = (Widget) o;
 
 				rowMap.set(colIndex, w);
 				return "";
-			} else if (o != null) {
+			} else if (o != null)
+			{
 				return o.toString();
 			}
 		}
@@ -1148,97 +1383,126 @@ public class GridView extends BaseObservable {
 
 		ColumnConfig c = cm.getColumn(colIndex);
 
-		if (val != null && val instanceof Number && c.getNumberFormat() != null) {
+		if (val != null && val instanceof Number && c.getNumberFormat() != null)
+		{
 			Number n = (Number) val;
 			val = c.getNumberFormat().format(n.doubleValue());
-		} else if (val != null && val instanceof Date && c.getDateTimeFormat() != null) {
+		} else if (val != null && val instanceof Date
+				&& c.getDateTimeFormat() != null)
+		{
 			DateTimeFormat dtf = c.getDateTimeFormat();
 			val = dtf.format((Date) val);
 		}
 
 		String text = null;
-		if (val != null) {
+		if (val != null)
+		{
 			text = val.toString();
 		}
 		return Util.isEmptyString(text) ? "&#160;" : text;
 	}
 
-	protected NodeList<Element> getRows() {
-		if (!hasRows()) {
+	protected NodeList<Element> getRows()
+	{
+		if (!hasRows())
+		{
 			return new JsArray().getJsObject().cast();
 		}
 		return mainBody.dom.getChildNodes().cast();
 	}
 
-	protected int getScrollAdjust() {
-		return adjustForHScroll ? (scroller != null ? (vbar ? scrollOffset : 2) : scrollOffset) : scrollOffset;
+	protected int getScrollAdjust()
+	{
+		return adjustForHScroll ? (scroller != null ? (vbar ? scrollOffset : 2)
+				: scrollOffset) : scrollOffset;
 	}
 
-	protected SortInfo getSortState() {
+	protected SortInfo getSortState()
+	{
 		return ds.getSortState();
 	}
 
-	protected int getTotalWidth() {
+	protected int getTotalWidth()
+	{
 		return cm.getTotalWidth();
 	}
 
-	protected Element getWidgetCell(int row, int cell) {
+	protected Element getWidgetCell(int row, int cell)
+	{
 		Element cellEl = getCell(row, cell);
-		if (cellEl != null) {
+		if (cellEl != null)
+		{
 			return cellEl.getFirstChildElement();
 		}
 		return null;
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	protected void handleComponentEvent(GridEvent ge) {
-		switch (ge.getEventTypeInt()) {
+	@SuppressWarnings(
+	{ "unchecked", "rawtypes" })
+	protected void handleComponentEvent(GridEvent ge)
+	{
+		switch (ge.getEventTypeInt())
+		{
 			case Event.ONMOUSEMOVE:
 				Element row = getRow(ge.getRowIndex());
-				if (overRow != null && row == null) {
+				if (overRow != null && row == null)
+				{
 					onRowOut(overRow);
-				} else if (row != null && overRow != row) {
-					if (overRow != null) {
+				} else if (row != null && overRow != row)
+				{
+					if (overRow != null)
+					{
 						onRowOut(overRow);
 					}
 					onRowOver(row);
 				}
-				break;
+			break;
 
 			case Event.ONMOUSEOVER:
 				EventTarget from = ge.getEvent().getRelatedEventTarget();
 				if (from == null
-						|| (Element.is(from) && !DOM.isOrHasChild(grid.getElement(),
-								(com.google.gwt.user.client.Element) Element.as(from)))) {
+						|| (Element.is(from) && !DOM.isOrHasChild(grid
+								.getElement(),
+								(com.google.gwt.user.client.Element) Element
+										.as(from))))
+				{
 					Element r = getRow(ge.getRowIndex());
-					if (r != null) {
+					if (r != null)
+					{
 						onRowOver(r);
 					}
 				}
-				break;
+			break;
 			case Event.ONMOUSEOUT:
 				EventTarget to = ge.getEvent().getRelatedEventTarget();
 				if (to == null
-						|| (Element.is(to) && !DOM.isOrHasChild(grid.getElement(),
-								(com.google.gwt.user.client.Element) Element.as(to)))) {
-					if (overRow != null) {
+						|| (Element.is(to) && !DOM.isOrHasChild(grid
+								.getElement(),
+								(com.google.gwt.user.client.Element) Element
+										.as(to))))
+				{
+					if (overRow != null)
+					{
 						onRowOut(overRow);
 					}
 				}
-				break;
+			break;
 			case Event.ONMOUSEDOWN:
 				onMouseDown(ge);
-				break;
+			break;
 			case Event.ONSCROLL:
-				if (scroller.isOrHasChild(ge.getTarget())) {
+				if (scroller.isOrHasChild(ge.getTarget()))
+				{
 					syncScroll();
 				}
-				break;
+			break;
 		}
 	}
 
-	protected boolean hasRows() {
-		if (mainBody == null) {
+	protected boolean hasRows()
+	{
+		if (mainBody == null)
+		{
 			return false;
 		}
 		Element e = mainBody.dom.getFirstChildElement();
@@ -1248,10 +1512,13 @@ public class GridView extends BaseObservable {
 	/**
 	 * Initializes the view.
 	 * 
-	 * @param grid the grid
+	 * @param grid
+	 *            the grid
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	protected void init(final Grid grid) {
+	@SuppressWarnings(
+	{ "unchecked", "rawtypes" })
+	protected void init(final Grid grid)
+	{
 		this.grid = grid;
 		this.cm = grid.getColumnModel();
 		selectable = !grid.isDisableTextSelection();
@@ -1264,7 +1531,8 @@ public class GridView extends BaseObservable {
 
 		newColumnHeader();
 
-		if (cm.getAggregationRows().size() > 0) {
+		if (cm.getAggregationRows().size() > 0)
+		{
 			footer = new ColumnFooter(grid, cm);
 		}
 	}
@@ -1272,26 +1540,34 @@ public class GridView extends BaseObservable {
 	/**
 	 * Initializes the data.
 	 * 
-	 * @param ds the data store
-	 * @param cm the column model
+	 * @param ds
+	 *            the data store
+	 * @param cm
+	 *            the column model
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	protected void initData(ListStore ds, ColumnModel cm) {
-		if (this.ds != null) {
+	@SuppressWarnings(
+	{ "unchecked", "rawtypes" })
+	protected void initData(ListStore ds, ColumnModel cm)
+	{
+		if (this.ds != null)
+		{
 			this.ds.removeStoreListener(listener);
 		}
-		if (ds != null) {
+		if (ds != null)
+		{
 			ds.addStoreListener(listener);
 		}
 		this.ds = ds;
 
-		if (this.cm != null) {
+		if (this.cm != null)
+		{
 			this.cm.removeListener(Events.HiddenChange, columnListener);
 			this.cm.removeListener(Events.HeaderChange, columnListener);
 			this.cm.removeListener(Events.WidthChange, columnListener);
 			this.cm.removeListener(Events.ColumnMove, columnListener);
 		}
-		if (cm != null) {
+		if (cm != null)
+		{
 			cm.addListener(Events.HiddenChange, columnListener);
 			cm.addListener(Events.HeaderChange, columnListener);
 			cm.addListener(Events.WidthChange, columnListener);
@@ -1300,7 +1576,8 @@ public class GridView extends BaseObservable {
 		this.cm = cm;
 	}
 
-	protected void initElements() {
+	protected void initElements()
+	{
 		NodeList<Node> cs = grid.getElement().getFirstChild().getChildNodes();
 
 		el = grid.el().firstChild();
@@ -1308,7 +1585,8 @@ public class GridView extends BaseObservable {
 		mainWrap = new El((com.google.gwt.user.client.Element) cs.getItem(0));
 		mainHd = mainWrap.firstChild();
 
-		if (grid.isHideHeaders()) {
+		if (grid.isHideHeaders())
+		{
 			mainHd.setVisible(false);
 		}
 
@@ -1317,7 +1595,8 @@ public class GridView extends BaseObservable {
 		scroller = mainWrap.getChild(1);
 		scroller.addEventsSunk(Event.ONSCROLL);
 
-		if (forceFit) {
+		if (forceFit)
+		{
 			scroller.setStyleAttribute("overflowX", "hidden");
 		}
 
@@ -1326,58 +1605,74 @@ public class GridView extends BaseObservable {
 		grid.swallowEvent(Events.OnClick, focusEl.dom, true);
 	}
 
-	protected void initListeners() {
-		listener = new StoreListener<ModelData>() {
+	protected void initListeners()
+	{
+		listener = new StoreListener<ModelData>()
+		{
 
 			@Override
-			public void storeAdd(StoreEvent<ModelData> se) {
+			public void storeAdd(StoreEvent<ModelData> se)
+			{
 				onAdd(ds, se.getModels(), se.getIndex());
 			}
 
 			@Override
-			public void storeBeforeDataChanged(StoreEvent<ModelData> se) {
+			public void storeBeforeDataChanged(StoreEvent<ModelData> se)
+			{
 				onBeforeDataChanged(se);
 			}
 
 			@Override
-			public void storeClear(StoreEvent<ModelData> se) {
+			public void storeClear(StoreEvent<ModelData> se)
+			{
 				onClear(se);
 			}
 
 			@Override
-			public void storeDataChanged(StoreEvent<ModelData> se) {
+			public void storeDataChanged(StoreEvent<ModelData> se)
+			{
 				onDataChanged(se);
 			}
 
 			@Override
-			public void storeFilter(StoreEvent<ModelData> se) {
+			public void storeFilter(StoreEvent<ModelData> se)
+			{
 				onDataChanged(se);
 			}
 
 			@Override
-			public void storeRemove(StoreEvent<ModelData> se) {
+			public void storeRemove(StoreEvent<ModelData> se)
+			{
 				onRemove(ds, se.getModel(), se.getIndex(), false);
 			}
 
 			@Override
-			public void storeUpdate(StoreEvent<ModelData> se) {
+			public void storeUpdate(StoreEvent<ModelData> se)
+			{
 				onUpdate(ds, se.getModel());
 			}
 
 		};
 
-		columnListener = new Listener<ColumnModelEvent>() {
+		columnListener = new Listener<ColumnModelEvent>()
+		{
 			@Override
-			public void handleEvent(ColumnModelEvent e) {
-				if (grid.isViewReady()) {
+			public void handleEvent(ColumnModelEvent e)
+			{
+				if (grid.isViewReady())
+				{
 					EventType type = e.getType();
-					if (type == Events.HiddenChange) {
+					if (type == Events.HiddenChange)
+					{
 						onHiddenChange(cm, e.getColIndex(), e.isHidden());
-					} else if (type == Events.HeaderChange) {
+					} else if (type == Events.HeaderChange)
+					{
 						onHeaderChange(e.getColIndex(), e.getHeader());
-					} else if (type == Events.WidthChange) {
+					} else if (type == Events.WidthChange)
+					{
 						onColumnWidthChange(e.getColIndex(), e.getWidth());
-					} else if (type == Events.ColumnMove) {
+					} else if (type == Events.ColumnMove)
+					{
 						onColumnMove(e.getColIndex());
 					}
 				}
@@ -1385,36 +1680,47 @@ public class GridView extends BaseObservable {
 		};
 	}
 
-	protected void initTemplates() {
+	protected void initTemplates()
+	{
 		templates = GWT.create(GridTemplates.class);
 	}
 
-	protected void initUI(final Grid<ModelData> grid) {
+	protected void initUI(final Grid<ModelData> grid)
+	{
 
 	}
 
-	protected void insertRows(ListStore<ModelData> store, int firstRow, int lastRow, boolean isUpdate) {
+	protected void insertRows(ListStore<ModelData> store, int firstRow,
+			int lastRow, boolean isUpdate)
+	{
 		Element e = mainBody.dom.getFirstChildElement();
-		if (e != null && !hasRows()) {
+		if (e != null && !hasRows())
+		{
 			mainBody.dom.setInnerHTML("");
 		}
 
 		String html = renderRows(firstRow, lastRow);
 		Element before = getRow(firstRow);
 
-		if (before != null) {
-			DomHelper.insertBefore((com.google.gwt.user.client.Element) before, html);
-		} else {
+		if (before != null)
+		{
+			DomHelper.insertBefore((com.google.gwt.user.client.Element) before,
+					html);
+		} else
+		{
 			DomHelper.insertHtml("beforeEnd", mainBody.dom, html);
 		}
 
-		if (!isUpdate) {
+		if (!isUpdate)
+		{
 			processRows(firstRow, false);
 		}
 	}
 
-	protected void layout(boolean skipResize) {
-		if (mainBody == null) {
+	protected void layout(boolean skipResize)
+	{
+		if (mainBody == null)
+		{
 			return;
 		}
 
@@ -1423,27 +1729,34 @@ public class GridView extends BaseObservable {
 
 		int vw = csize.width;
 		int vh = 0;
-		if (vw < 10 || csize.height < 20) {
+		if (vw < 10 || csize.height < 20)
+		{
 			return;
 		}
 
-		if (!skipResize) {
+		if (!skipResize)
+		{
 			resize();
 		}
 
-		if (forceFit || autoFill) {
-			if (lastViewWidth != vw) {
+		if (forceFit || autoFill)
+		{
+			if (lastViewWidth != vw)
+			{
 				fitColumns(false, false, -1);
 				header.updateTotalWidth(getOffsetWidth(), getTotalWidth());
-				if (footer != null) {
+				if (footer != null)
+				{
 					footer.updateTotalWidth(getOffsetWidth(), getTotalWidth());
 				}
 				lastViewWidth = vw;
 			}
-		} else {
+		} else
+		{
 			autoExpand(false);
 			header.updateTotalWidth(getOffsetWidth(), getTotalWidth());
-			if (footer != null) {
+			if (footer != null)
+			{
 				footer.updateTotalWidth(getOffsetWidth(), getTotalWidth());
 			}
 			syncHeaderScroll();
@@ -1452,41 +1765,53 @@ public class GridView extends BaseObservable {
 		templateOnLayout(vw, vh);
 	}
 
-	protected ColumnHeader newColumnHeader() {
-		header = new ColumnHeader(grid, cm) {
+	protected ColumnHeader newColumnHeader()
+	{
+		header = new ColumnHeader(grid, cm)
+		{
 			@SuppressWarnings("unchecked")
 			@Override
-			protected ComponentEvent createColumnEvent(ColumnHeader header, int column, Menu menu) {
-				GridEvent<ModelData> event = (GridEvent<ModelData>) GridView.this.createComponentEvent(null);
+			protected ComponentEvent createColumnEvent(ColumnHeader header,
+					int column, Menu menu)
+			{
+				GridEvent<ModelData> event = (GridEvent<ModelData>) GridView.this
+						.createComponentEvent(null);
 				event.setColIndex(column);
 				event.setMenu(menu);
 				return event;
 			}
 
 			@Override
-			protected Menu getContextMenu(int column) {
+			protected Menu getContextMenu(int column)
+			{
 				return createContextMenu(column);
 			}
 
 			@Override
-			protected void onColumnSplitterMoved(int colIndex, int width) {
+			protected void onColumnSplitterMoved(int colIndex, int width)
+			{
 				super.onColumnSplitterMoved(colIndex, width);
 				GridView.this.onColumnSplitterMoved(colIndex, width);
 			}
 
 			@Override
-			protected void onHeaderClick(ComponentEvent ce, int column) {
+			protected void onHeaderClick(ComponentEvent ce, int column)
+			{
 				super.onHeaderClick(ce, column);
 				GridView.this.onHeaderClick(grid, column);
 			}
 
 			@Override
-			protected void onKeyDown(ComponentEvent ce, int index) {
+			protected void onKeyDown(ComponentEvent ce, int index)
+			{
 				ce.cancelBubble();
-				if (grid.getSelectionModel() instanceof CellSelectionModel<?>) {
-					CellSelectionModel<?> csm = (CellSelectionModel<?>) grid.getSelectionModel();
+				if (grid.getSelectionModel() instanceof CellSelectionModel<?>)
+				{
+					CellSelectionModel<?> csm = (CellSelectionModel<?>) grid
+							.getSelectionModel();
 					csm.selectCell(0, index);
-				} else {
+				} else
+				{
 					grid.getSelectionModel().select(0, false);
 				}
 			}
@@ -1498,60 +1823,77 @@ public class GridView extends BaseObservable {
 		return header;
 	}
 
-	protected void notifyHide() {
+	protected void notifyHide()
+	{
 	}
 
-	protected void notifyShow() {
+	protected void notifyShow()
+	{
 	}
 
-	protected void onAdd(ListStore<ModelData> store, List<ModelData> models, int index) {
-		if (grid != null && grid.isViewReady()) {
+	protected void onAdd(ListStore<ModelData> store, List<ModelData> models,
+			int index)
+	{
+		if (grid != null && grid.isViewReady())
+		{
 			insertRows(store, index, index + (models.size() - 1), false);
 			renderWidgets(index, index + (models.size() - 1));
 			addTask.delay(10);
 		}
 	}
 
-	protected void onBeforeDataChanged(StoreEvent<ModelData> se) {
-		if (grid != null && grid.isLoadMask()) {
+	protected void onBeforeDataChanged(StoreEvent<ModelData> se)
+	{
+		if (grid != null && grid.isLoadMask())
+		{
 			grid.mask(GXT.MESSAGES.loadMask_msg());
 		}
 	}
 
-	protected void onCellDeselect(int row, int col) {
+	protected void onCellDeselect(int row, int col)
+	{
 		Element cell = getCell(row, col);
-		if (cell != null) {
+		if (cell != null)
+		{
 			fly(cell).removeStyleName("x-grid3-cell-selected");
-			if (GXT.isAriaEnabled()) {
+			if (GXT.isAriaEnabled())
+			{
 				cell.setAttribute("aria-selected", "false");
 			}
 		}
 	}
 
-	protected void onCellSelect(int row, int col) {
+	protected void onCellSelect(int row, int col)
+	{
 		Element cell = getCell(row, col);
-		if (cell != null) {
+		if (cell != null)
+		{
 			fly(cell).addStyleName("x-grid3-cell-selected");
-			if (GXT.isAriaEnabled()) {
+			if (GXT.isAriaEnabled())
+			{
 				cell.setAttribute("aria-selected", "true");
 				grid.setAriaState("aria-activedescendant", cell.getId());
 			}
 		}
 	}
 
-	protected void onClear(StoreEvent<ModelData> se) {
+	protected void onClear(StoreEvent<ModelData> se)
+	{
 		refresh(false);
 	}
 
-	protected void onClick(GridEvent<ModelData> ce) {
+	protected void onClick(GridEvent<ModelData> ce)
+	{
 		Element row = findRow(ce.getTarget());
-		if (row != null) {
+		if (row != null)
+		{
 			ce.setRowIndex(findRowIndex(row));
 			grid.fireEvent(Events.RowClick, ce);
 		}
 	}
 
-	protected void onColumnMove(int newIndex) {
+	protected void onColumnMove(int newIndex)
+	{
 		boolean pScroll = preventScrollToTopOnRefresh;
 		preventScrollToTopOnRefresh = true;
 		refresh(true);
@@ -1560,7 +1902,8 @@ public class GridView extends BaseObservable {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void onColumnSplitterMoved(int colIndex, int width) {
+	protected void onColumnSplitterMoved(int colIndex, int width)
+	{
 		stopEditing();
 		userResized = true;
 		width = Math.max(grid.getMinColumnWidth(), width);
@@ -1572,151 +1915,192 @@ public class GridView extends BaseObservable {
 		grid.fireEvent(Events.ColumnResize, e);
 	}
 
-	protected void onColumnWidthChange(int column, int width) {
-		if (forceFit) {
+	protected void onColumnWidthChange(int column, int width)
+	{
+		if (forceFit)
+		{
 			fitColumns(false, false, column);
 			header.updateTotalWidth(getOffsetWidth(), getTotalWidth());
-		} else {
+		} else
+		{
 			updateColumnWidth(column, width);
 			header.updateTotalWidth(getOffsetWidth(), getTotalWidth());
-			if (GXT.isIE) {
+			if (GXT.isIE)
+			{
 				syncHeaderScroll();
 			}
 		}
 
-		if (grid.isStateful()) {
+		if (grid.isStateful())
+		{
 			Map<String, Object> state = grid.getState();
 			state.put("width" + cm.getColumnId(column), width);
 			grid.saveState();
 		}
 	}
 
-	protected void onDataChanged(StoreEvent<ModelData> se) {
+	protected void onDataChanged(StoreEvent<ModelData> se)
+	{
 		refresh(false);
-		if (grid != null && grid.isLoadMask()) {
-			if (grid.isEnabled()) {
+		if (grid != null && grid.isLoadMask())
+		{
+			if (grid.isEnabled())
+			{
 				grid.unmask();
-			} else {
+			} else
+			{
 				grid.mask();
 			}
 		}
 
-		if (grid != null && grid.isStateful() && ds != null && ds.getLoadConfig() != null
-				&& ds.getLoadConfig() instanceof PagingLoadConfig) {
+		if (grid != null && grid.isStateful() && ds != null
+				&& ds.getLoadConfig() != null
+				&& ds.getLoadConfig() instanceof PagingLoadConfig)
+		{
 			PagingLoadConfig config = (PagingLoadConfig) ds.getLoadConfig();
 			Map<String, Object> state = grid.getState();
 			state.put("offset", config.getOffset());
 			state.put("limit", config.getLimit());
 			grid.saveState();
 		}
-
-		constrainFocusElement();
 	}
 
-	protected void onHeaderChange(int column, String text) {
+	protected void onHeaderChange(int column, String text)
+	{
 		header.setHeader(column, text);
 	}
 
-	protected void onHeaderClick(Grid<ModelData> grid, int column) {
+	protected void onHeaderClick(Grid<ModelData> grid, int column)
+	{
 		this.headerColumnIndex = column;
-		if (!headerDisabled && cm.isSortable(column)) {
+		if (!headerDisabled && cm.isSortable(column))
+		{
 			doSort(column, null);
 		}
 	}
 
-	protected void onHiddenChange(ColumnModel cm, int col, boolean hidden) {
+	protected void onHiddenChange(ColumnModel cm, int col, boolean hidden)
+	{
 		updateColumnHidden(col, hidden);
 
-		if (grid.isStateful()) {
+		if (grid.isStateful())
+		{
 			Map<String, Object> state = grid.getState();
 			state.put("hidden" + cm.getColumnId(col), hidden);
 			grid.saveState();
 		}
 	}
 
-	protected void onHighlightRow(int rowIndex, boolean highlight) {
+	protected void onHighlightRow(int rowIndex, boolean highlight)
+	{
 		Element row = getRow(rowIndex);
-		if (row != null) {
-			if (highlight) {
+		if (row != null)
+		{
+			if (highlight)
+			{
 				addRowStyle(row, "x-grid3-highlightrow");
-				if (GXT.isAriaEnabled()) {
+				if (GXT.isAriaEnabled())
+				{
 					grid.setAriaState("aria-activedescendant", row.getId());
 				}
-			} else {
+			} else
+			{
 				removeRowStyle(row, "x-grid3-highlightrow");
 			}
 		}
 	}
 
-	protected void onMouseDown(GridEvent<ModelData> ge) {
+	protected void onMouseDown(GridEvent<ModelData> ge)
+	{
 
 	}
 
-	protected void onRemove(ListStore<ModelData> ds, ModelData m, int index, boolean isUpdate) {
-		if (grid != null && grid.isViewReady()) {
+	protected void onRemove(ListStore<ModelData> ds, ModelData m, int index,
+			boolean isUpdate)
+	{
+		if (grid != null && grid.isViewReady())
+		{
 			detachWidget(index, true);
 			removeRow(index);
-			if (!isUpdate) {
+			if (!isUpdate)
+			{
 				removeTask.delay(10);
-			} else {
+			} else
+			{
 				removeTask.delay(0);
 			}
 			constrainFocusElement();
 		}
 	}
 
-	protected void onRowDeselect(int rowIndex) {
+	protected void onRowDeselect(int rowIndex)
+	{
 		Element row = getRow(rowIndex);
-		if (row != null) {
+		if (row != null)
+		{
 			removeRowStyle(row, "x-grid3-row-selected");
 			removeRowStyle(row, "x-grid3-highlightrow ");
-			if (GXT.isAriaEnabled()) {
+			if (GXT.isAriaEnabled())
+			{
 				row.setAttribute("aria-selected", "false");
 			}
 		}
 	}
 
-	protected void onRowOut(Element row) {
-		if (grid.isTrackMouseOver()) {
+	protected void onRowOut(Element row)
+	{
+		if (grid.isTrackMouseOver())
+		{
 			removeRowStyle(row, "x-grid3-row-over");
 			overRow = null;
 		}
 	}
 
-	protected void onRowOver(Element row) {
-		if (grid.isTrackMouseOver()) {
+	protected void onRowOver(Element row)
+	{
+		if (grid.isTrackMouseOver())
+		{
 			addRowStyle(row, "x-grid3-row-over");
 			overRow = row;
 		}
 	}
 
-	protected void onRowSelect(int rowIndex) {
+	protected void onRowSelect(int rowIndex)
+	{
 		Element row = getRow(rowIndex);
-		if (row != null) {
+		if (row != null)
+		{
 			onRowOut(row);
 			addRowStyle(row, "x-grid3-row-selected");
-			if (GXT.isAriaEnabled()) {
+			if (GXT.isAriaEnabled())
+			{
 				row.setAttribute("aria-selected", "true");
-				grid.getElement().setAttribute("aria-activedescendant", row.getId());
+				grid.getElement().setAttribute("aria-activedescendant",
+						row.getId());
 			}
 		}
 	}
 
-	protected void onUpdate(ListStore<ModelData> store, ModelData model) {
+	protected void onUpdate(ListStore<ModelData> store, ModelData model)
+	{
 		refreshRow(store.indexOf(model));
 	}
 
-	protected ModelData prepareData(ModelData model) {
-		if (grid.getModelProcessor() != null) {
+	protected ModelData prepareData(ModelData model)
+	{
+		if (grid.getModelProcessor() != null)
+		{
 			boolean silent = false;
-			if (model instanceof BaseModel) {
+			if (model instanceof BaseModel)
+			{
 				silent = ((BaseModel) model).isSilent();
 				((BaseModel) model).setSilent(true);
 			}
 
 			ModelData m = grid.getModelProcessor().prepareData(model);
 
-			if (model instanceof BaseModel) {
+			if (model instanceof BaseModel)
+			{
 				((BaseModel) model).setSilent(silent);
 			}
 
@@ -1725,25 +2109,33 @@ public class GridView extends BaseObservable {
 		return model;
 	}
 
-	protected void processRows(int startRow, boolean skipStripe) {
-		if (ds.getCount() < 1) {
+	protected void processRows(int startRow, boolean skipStripe)
+	{
+		if (ds.getCount() < 1)
+		{
 			return;
 		}
 		skipStripe = skipStripe || !grid.isStripeRows();
 		NodeList<Element> rows = getRows();
 		String cls = "x-grid3-row-alt";
-		for (int i = 0, len = rows.getLength(); i < len; i++) {
+		for (int i = 0, len = rows.getLength(); i < len; i++)
+		{
 			Element row = rows.getItem(i);
 			row.setPropertyInt("rowIndex", i);
-			if (!skipStripe) {
+			if (!skipStripe)
+			{
 				boolean isAlt = (i + 1) % 2 == 0;
-				boolean hasAlt = row.getClassName() != null && row.getClassName().indexOf(cls) != -1;
-				if (isAlt == hasAlt) {
+				boolean hasAlt = row.getClassName() != null
+						&& row.getClassName().indexOf(cls) != -1;
+				if (isAlt == hasAlt)
+				{
 					continue;
 				}
-				if (isAlt) {
+				if (isAlt)
+				{
 					El.fly(row).addStyleName(cls);
-				} else {
+				} else
+				{
 					El.fly(row).removeStyleName(cls);
 				}
 			}
@@ -1751,10 +2143,13 @@ public class GridView extends BaseObservable {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void refreshRow(int row) {
-		if (grid != null && grid.isViewReady()) {
+	protected void refreshRow(int row)
+	{
+		if (grid != null && grid.isViewReady())
+		{
 			ModelData m = ds.getAt(row);
-			if (m != null) {
+			if (m != null)
+			{
 				// do not change focus on refresh
 				// handles situation with changing cell value with field binding
 				focusEnabled = false;
@@ -1774,51 +2169,65 @@ public class GridView extends BaseObservable {
 		}
 	}
 
-	protected void removeRow(int row) {
+	protected void removeRow(int row)
+	{
 		Element r = getRow(row);
-		if (r != null) {
+		if (r != null)
+		{
 			fly(r).removeFromParent();
 		}
 	}
 
-	protected void removeRowStyle(Element row, String style) {
+	protected void removeRowStyle(Element row, String style)
+	{
 		fly(row).removeStyleName(style);
 	}
 
-	protected void render() {
+	protected void render()
+	{
 		renderUI();
-		grid.sinkEvents(Event.ONCLICK | Event.ONDBLCLICK | Event.MOUSEEVENTS | Event.FOCUSEVENTS);
+		grid.sinkEvents(Event.ONCLICK | Event.ONDBLCLICK | Event.MOUSEEVENTS
+				| Event.FOCUSEVENTS);
 	}
 
-	protected void renderFooter() {
-		if (!footer.isRendered()) {
+	protected void renderFooter()
+	{
+		if (!footer.isRendered())
+		{
 			footer.disableTextSelection(true);
 			footer.render(mainWrap.dom);
-		} else {
+		} else
+		{
 			mainWrap.appendChild(footer.getElement());
 		}
 	}
 
-	protected void renderHeader() {
+	protected void renderHeader()
+	{
 		El head = grid.el().selectNode(".x-grid3-hh");
 		head.removeChildren();
-		if (!header.isRendered()) {
+		if (!header.isRendered())
+		{
 			header.render(head.dom);
-		} else {
+		} else
+		{
 			head.appendChild(header.getElement());
 		}
 	}
 
-	protected String renderRows(int startRow, int endRow) {
+	protected String renderRows(int startRow, int endRow)
+	{
 		int colCount = cm.getColumnCount();
 
-		if (ds.getCount() < 1) {
+		if (ds.getCount() < 1)
+		{
 			return "";
 		}
 
 		List<ColumnData> cs = getColumnData();
 
-		if (endRow == -1) {
+		if (endRow == -1)
+		{
 			endRow = ds.getCount() - 1;
 		}
 
@@ -1826,7 +2235,8 @@ public class GridView extends BaseObservable {
 		return doRender(cs, rs, startRow, colCount, grid.isStripeRows());
 	}
 
-	protected void renderUI() {
+	protected void renderUI()
+	{
 		String h = "<div class='x-grid3-hh' role='row'></div>";
 		String body = templates.body("");
 
@@ -1841,31 +2251,43 @@ public class GridView extends BaseObservable {
 		header.setEnableColumnResizing(grid.isColumnResize());
 		header.setEnableColumnReorder(grid.isColumnReordering());
 
-		if (footer != null) {
+		if (footer != null)
+		{
 			renderFooter();
 		}
 
 		updateHeaderSortState();
 	}
 
-	protected void renderWidgets(int startRow, int endRow) {
-		if (grid.isViewReady()) {
-			if (endRow == -1) {
+	protected void renderWidgets(int startRow, int endRow)
+	{
+		if (grid.isViewReady())
+		{
+			if (endRow == -1)
+			{
 				endRow = widgetList.size() - 1;
 			}
-			for (int i = startRow; i <= endRow; i++) {
-				List<Widget> m = i < widgetList.size() ? widgetList.get(i) : null;
-				if (m != null) {
-					for (int j = 0; j < grid.getColumnModel().getColumnCount(); j++) {
+			for (int i = startRow; i <= endRow; i++)
+			{
+				List<Widget> m = i < widgetList.size() ? widgetList.get(i)
+						: null;
+				if (m != null)
+				{
+					for (int j = 0; j < grid.getColumnModel().getColumnCount(); j++)
+					{
 						Widget w = j < m.size() ? m.get(j) : null;
-						if (w != null) {
+						if (w != null)
+						{
 							Element cell = getWidgetCell(i, j);
-							if (cell != null) {
-								if (w.getElement().getParentElement() != cell) {
+							if (cell != null)
+							{
+								if (w.getElement().getParentElement() != cell)
+								{
 									fly(cell).removeChildren();
 									cell.appendChild(w.getElement());
 								}
-								if (grid.isAttached()) {
+								if (grid.isAttached())
+								{
 									ComponentHelper.doAttach(w);
 								}
 							}
@@ -1876,8 +2298,10 @@ public class GridView extends BaseObservable {
 		}
 	}
 
-	protected void resize() {
-		if (mainBody == null) {
+	protected void resize()
+	{
+		if (mainBody == null)
+		{
 			return;
 		}
 
@@ -1886,130 +2310,165 @@ public class GridView extends BaseObservable {
 
 		int vw = csize.width;
 		int vh = 0;
-		if (vw < 10 || csize.height < 20) {
+		if (vw < 10 || csize.height < 20)
+		{
 			return;
 		}
 
-		if (grid.isAutoHeight()) {
+		if (grid.isAutoHeight())
+		{
 			el.setWidth(csize.width);
 			scroller.setWidth(vw);
-		} else {
+		} else
+		{
 			el.setSize(csize.width, csize.height);
 		}
 
 		int hdHeight = innerHd.getHeight();
 		vh = csize.height - hdHeight;
 
-		if (footer != null) {
+		if (footer != null)
+		{
 			vh -= footer.getHeight();
 		}
 
-		if (!grid.isAutoHeight()) {
+		if (!grid.isAutoHeight())
+		{
 			scroller.setSize(vw, vh);
 		}
 
-		if (innerHd != null) {
+		if (innerHd != null)
+		{
 			innerHd.setWidth(vw);
 		}
-		if (footer != null) {
+		if (footer != null)
+		{
 			footer.setWidth(vw);
 		}
 
 	}
 
-	protected void restoreScroll(Point state) {
-		if (state.y < scroller.getWidth()) {
+	protected void restoreScroll(Point state)
+	{
+		if (state.y < scroller.getWidth())
+		{
 			scroller.setScrollLeft(state.x);
 		}
-		if (state.x < scroller.getHeight()) {
+		if (state.x < scroller.getHeight())
+		{
 			scroller.setScrollTop(state.y);
 		}
 	}
 
-	protected void stopEditing() {
-		if (grid.editSupport != null) {
+	protected void stopEditing()
+	{
+		if (grid.editSupport != null)
+		{
 			grid.editSupport.stopEditing(true);
 		}
 	}
 
-	protected void syncHeaderScroll() {
+	protected void syncHeaderScroll()
+	{
 		int sl = scroller.getScrollLeft();
 		innerHd.setScrollLeft(sl);
 		// second time for IE (1/2 time first fails, other browsers ignore)
 		innerHd.setScrollLeft(sl);
 
-		if (footer != null) {
+		if (footer != null)
+		{
 			footer.el().setScrollLeft(sl);
 			footer.el().setScrollLeft(sl);
 		}
 	}
 
-	protected void syncHScroll() {
-		if (!hasRows()) {
+	protected void syncHScroll()
+	{
+		if (!hasRows())
+		{
 			El child = mainBody.firstChild();
 
-			if (child != null) {
+			if (child != null)
+			{
 				child.setWidth(cm.getTotalWidth(), true);
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void syncScroll() {
+	protected void syncScroll()
+	{
 		syncHeaderScroll();
+		int scrollLeft = scroller.getScrollLeft();
+		int scrollTop = scroller.getScrollTop();
 		GridEvent<ModelData> ge = (GridEvent<ModelData>) createComponentEvent(null);
-		ge.setScrollLeft(scroller.getScrollLeft());
-		ge.setScrollTop(scroller.getScrollTop());
+		ge.setScrollLeft(scrollLeft);
+		ge.setScrollTop(scrollTop);
+		constrainFocusElement();
 		grid.fireEvent(Events.BodyScroll, ge);
 	}
 
-	protected void templateAfterMove(int index) {
+	protected void templateAfterMove(int index)
+	{
 		// template method
 	}
 
-	protected void templateOnAllColumnWidthsUpdated(List<Integer> ws, int tw) {
+	protected void templateOnAllColumnWidthsUpdated(List<Integer> ws, int tw)
+	{
 		// template method
 	}
 
-	protected void templateOnColumnHiddenUpdated(int col, boolean hidden, int tw) {
+	protected void templateOnColumnHiddenUpdated(int col, boolean hidden, int tw)
+	{
 		// template method
 	}
 
-	protected void templateOnColumnWidthUpdated(int col, int w, int tw) {
+	protected void templateOnColumnWidthUpdated(int col, int w, int tw)
+	{
 		// template method
 	}
 
-	protected void templateOnLayout(int vw, int vh) {
+	protected void templateOnLayout(int vw, int vh)
+	{
 		// template method
 	}
 
-	protected void templateUpdateColumnText(int col, String text) {
+	protected void templateUpdateColumnText(int col, String text)
+	{
 		// template method
 	}
 
-	protected void updateAllColumnWidths() {
+	protected void updateAllColumnWidths()
+	{
 		int tw = getTotalWidth();
 		int clen = cm.getColumnCount();
 		Stack<Integer> ws = new Stack<Integer>();
 
-		for (int i = 0; i < clen; i++) {
+		for (int i = 0; i < clen; i++)
+		{
 			ws.push(getColumnWidth(i));
 			header.updateColumnWidth(i, cm.getColumnWidth(i));
-			if (footer != null) {
+			if (footer != null)
+			{
 				footer.updateColumnWidth(i, cm.getColumnWidth(i));
 			}
 		}
 
 		NodeList<Element> ns = getRows();
-		for (int i = 0, len = ns.getLength(); i < len; i++) {
+		for (int i = 0, len = ns.getLength(); i < len; i++)
+		{
 			Element row = ns.getItem(i);
 			row.getStyle().setPropertyPx("width", tw);
-			if (row.getFirstChild() != null) {
-				row.getFirstChildElement().getStyle().setPropertyPx("width", tw);
+			if (row.getFirstChild() != null)
+			{
+				row.getFirstChildElement().getStyle()
+						.setPropertyPx("width", tw);
 				TableSectionElement e = row.getFirstChild().cast();
 				TableRowElement nodeList = e.getRows().getItem(0);
-				for (int j = 0; j < clen; j++) {
-					((Element) nodeList.getChildNodes().getItem(j)).getStyle().setPropertyPx("width", ws.get(j));
+				for (int j = 0; j < clen; j++)
+				{
+					((Element) nodeList.getChildNodes().getItem(j)).getStyle()
+							.setPropertyPx("width", ws.get(j));
 				}
 			}
 		}
@@ -2018,27 +2477,33 @@ public class GridView extends BaseObservable {
 		syncHScroll();
 	}
 
-	protected void updateColumnHidden(int index, boolean hidden) {
+	protected void updateColumnHidden(int index, boolean hidden)
+	{
 		int tw = getTotalWidth();
 		String display = hidden ? "none" : "";
 
 		El.fly(innerHd.dom.getFirstChildElement()).setWidth(getOffsetWidth());
-		El.fly(innerHd.dom.getFirstChildElement().getFirstChildElement()).setWidth(tw);
+		El.fly(innerHd.dom.getFirstChildElement().getFirstChildElement())
+				.setWidth(tw);
 
 		header.updateColumnHidden(index, hidden);
-		if (footer != null) {
+		if (footer != null)
+		{
 			footer.updateTotalWidth(getOffsetWidth(), tw);
 			footer.updateColumnHidden(index, hidden);
 		}
 
 		NodeList<Element> ns = getRows();
-		for (int i = 0, len = ns.getLength(); i < len; i++) {
+		for (int i = 0, len = ns.getLength(); i < len; i++)
+		{
 			Element elem = ns.getItem(i);
 			elem.getStyle().setProperty("width", tw + "px");
 			TableSectionElement e = (TableSectionElement) elem.getFirstChild();
-			if (e != null) {
+			if (e != null)
+			{
 				e.getStyle().setProperty("width", tw + "px");
-				Element cell = e.getRows().getItem(0).getChildNodes().getItem(index).cast();
+				Element cell = e.getRows().getItem(0).getChildNodes()
+						.getItem(index).cast();
 				cell.getStyle().setProperty("display", display);
 			}
 		}
@@ -2050,26 +2515,32 @@ public class GridView extends BaseObservable {
 		syncHScroll();
 	}
 
-	protected void updateColumnWidth(int col, int width) {
+	protected void updateColumnWidth(int col, int width)
+	{
 		int tw = getTotalWidth();
 		int w = getColumnWidth(col);
 
 		header.updateTotalWidth(-1, tw);
 		header.updateColumnWidth(col, width);
 
-		if (footer != null) {
+		if (footer != null)
+		{
 			footer.updateTotalWidth(getOffsetWidth(), tw);
 			footer.updateColumnWidth(col, width);
 		}
 
 		NodeList<Element> ns = getRows();
-		for (int i = 0, len = ns.getLength(); i < len; i++) {
+		for (int i = 0, len = ns.getLength(); i < len; i++)
+		{
 			Element row = ns.getItem(i);
 			row.getStyle().setPropertyPx("width", tw);
-			if (row.getFirstChild() != null) {
-				row.getFirstChildElement().getStyle().setPropertyPx("width", tw);
+			if (row.getFirstChild() != null)
+			{
+				row.getFirstChildElement().getStyle()
+						.setPropertyPx("width", tw);
 				TableSectionElement e = row.getFirstChild().cast();
-				((Element) e.getRows().getItem(0).getChildNodes().getItem(col)).getStyle().setPropertyPx("width", w);
+				((Element) e.getRows().getItem(0).getChildNodes().getItem(col))
+						.getStyle().setPropertyPx("width", w);
 			}
 		}
 
@@ -2078,23 +2549,29 @@ public class GridView extends BaseObservable {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void updateHeaderSortState() {
+	protected void updateHeaderSortState()
+	{
 		SortInfo state = getSortState();
-		if (state == null || Util.isEmptyString(state.getSortField())) {
+		if (state == null || Util.isEmptyString(state.getSortField()))
+		{
 			return;
 		}
-		if (sortState == null || (!sortState.getSortField().equals(state.getSortField()))
-				|| sortState.getSortDir() != state.getSortDir()) {
+		if (sortState == null
+				|| (!sortState.getSortField().equals(state.getSortField()))
+				|| sortState.getSortDir() != state.getSortDir())
+		{
 
 			GridEvent<ModelData> e = (GridEvent<ModelData>) createComponentEvent(null);
 			e.setSortInfo(state);
 
 			sortState = new SortInfo(state.getSortField(), state.getSortDir());
 			int sortColumn = cm.findColumnIndex(state.getSortField());
-			if (sortColumn != -1) {
+			if (sortColumn != -1)
+			{
 				updateSortIcon(sortColumn, sortState.getSortDir());
 			}
-			if (grid.isStateful()) {
+			if (grid.isStateful())
+			{
 				Map<String, Object> st = grid.getState();
 				st.put("sortField", sortState.getSortField());
 				st.put("sortDir", sortState.getSortDir().toString());
@@ -2104,66 +2581,79 @@ public class GridView extends BaseObservable {
 		}
 	}
 
-	protected void updateSortIcon(int colIndex, SortDir dir) {
+	protected void updateSortIcon(int colIndex, SortDir dir)
+	{
 		header.updateSortIcon(colIndex, dir);
 	}
 
 	private native String getCellIndexId(Element elem) /*-{
-    if (!@com.extjs.gxt.ui.client.widget.grid.GridView::colRe) {
-    @com.extjs.gxt.ui.client.widget.grid.GridView::colRe = new RegExp("x-grid3-td-([^\\s]+)");
-    }
-    if (elem) {
-    var m = elem.className.match(@com.extjs.gxt.ui.client.widget.grid.GridView::colRe);
-    if(m && m[1]){
-    return m[1];
-    }
-    }
-    return null;
-  }-*/;
+		if (!@com.extjs.gxt.ui.client.widget.grid.GridView::colRe) {
+			@com.extjs.gxt.ui.client.widget.grid.GridView::colRe = new RegExp(
+					"x-grid3-td-([^\\s]+)");
+		}
+		if (elem) {
+			var m = elem.className
+					.match(@com.extjs.gxt.ui.client.widget.grid.GridView::colRe);
+			if (m && m[1]) {
+				return m[1];
+			}
+		}
+		return null;
+	}-*/;
 
-	private void refreshFooterData() {
-		if (footer != null) {
+	private void refreshFooterData()
+	{
+		if (footer != null)
+		{
 			footer.refresh();
 		}
 	}
 
-	private void restrictMenu(Menu columns) {
+	private void restrictMenu(Menu columns)
+	{
 		int count = 0;
-		for (int i = 0, len = cm.getColumnCount(); i < len; i++) {
-			if (!shouldNotCount(i, true)) {
+		for (int i = 0, len = cm.getColumnCount(); i < len; i++)
+		{
+			if (!shouldNotCount(i, true))
+			{
 				count++;
 			}
 		}
 
-		if (count == 1) {
-			for (Component item : columns.getItems()) {
+		if (count == 1)
+		{
+			for (Component item : columns.getItems())
+			{
 				CheckMenuItem ci = (CheckMenuItem) item;
-				if (ci.isChecked()) {
+				if (ci.isChecked())
+				{
 					ci.disable();
 				}
 			}
-		} else {
-			for (Component item : columns.getItems()) {
+		} else
+		{
+			for (Component item : columns.getItems())
+			{
 				item.enable();
 			}
 		}
 	}
 
-	private boolean shouldNotCount(int columnIndex, boolean includeHidden) {
-		return cm.getColumnHeader(columnIndex) == null || cm.getColumnHeader(columnIndex).equals("")
-		|| (includeHidden && cm.isHidden(columnIndex)) || cm.isFixed(columnIndex);
+	private boolean shouldNotCount(int columnIndex, boolean includeHidden)
+	{
+		return cm.getColumnHeader(columnIndex) == null
+				|| cm.getColumnHeader(columnIndex).equals("")
+				|| (includeHidden && cm.isHidden(columnIndex))
+				|| cm.isFixed(columnIndex);
 	}
 
-	private void constrainFocusElement() {
-		Point p = focusEl.getXY();
-		Point p2 = new Point(scroller.getScrollLeft() + scroller.getWidth(), scroller.getScrollTop() + scroller.getHeight());
-		if (p2.x < p.x && p2.y < p.y) {
-			focusEl.setXY(p2);
-		} else if (p2.x < p.x) {
-			focusEl.setX(p2.x);
-		} else if (p2.y < p.y) {
-			focusEl.setY(p2.y);
-		}
+	private void constrainFocusElement()
+	{
+		int scrollLeft = scroller.dom.getScrollLeft();
+		int scrollTop = scroller.dom.getScrollTop();
+		int left = scroller.getWidth(true) / 2 + scrollLeft;
+		int top = scroller.getHeight(true) / 2 + scrollTop;
+		focusEl.setLeftTop(left, top);
 	}
 
 }

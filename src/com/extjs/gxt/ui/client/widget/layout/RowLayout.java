@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -103,9 +103,9 @@ public class RowLayout extends Layout {
 	for (int i = 0; i < count; i++) {
 		Component c = container.getItem(isRTL ? 
 				count - 1 - i : i);
-      if(!c.isVisible(false)){
-        continue;
-      }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       c.el().makePositionable(true);
       c.el().setStyleAttribute("margin", "0px");
 
@@ -138,9 +138,9 @@ public class RowLayout extends Layout {
     for (int i = 0; i < count; i++) {
         Component c = container.getItem(isRTL ?
         		count - 1 - i : i);
-      if(!c.isVisible(false)){
-        continue;
-      }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {
@@ -201,9 +201,9 @@ public class RowLayout extends Layout {
     // so we need to make 2 passes
     for (int i = 0; i < count; i++) {
       Component c = container.getItem(i);
-      if(!c.isVisible(false)){
-        continue;
-      }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {
@@ -227,9 +227,9 @@ public class RowLayout extends Layout {
 
     for (int i = 0; i < count; i++) {
       Component c = container.getItem(i);
-      if(!c.isVisible(false)){
-        continue;
-      }
+//      if(!c.isVisible(false)){
+//        continue;
+//      }
       RowData data = null;
       LayoutData d = getLayoutData(c);
       if (d != null && d instanceof RowData) {

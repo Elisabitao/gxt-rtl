@@ -1,5 +1,5 @@
 /*
- * Ext GWT 2.2.4 - Ext for GWT
+ * Ext GWT 2.2.5 - Ext for GWT
  * Copyright(c) 2007-2010, Ext JS, LLC.
  * licensing@extjs.com
  * 
@@ -386,6 +386,7 @@ public class ToolTip extends Tip {
     anchorEl = new El(DOM.createDiv());
     anchorEl.addStyleName("x-tip-anchor");
     el().appendChild(anchorEl.dom);
+    el().addStyleName("x-ignore");
   }
 
   protected void onTargetOut(ComponentEvent ce) {
